@@ -71,10 +71,25 @@ class SearchCreditForm extends CFormModel
         return array(
             array('id, employee_id, employee_name, credit_type, credit_point, apply_date, images_url, remark, reject_note, lcu, luu, lcd, lud','safe'),
 
-            array('employee_id','required'),
-            array('credit_type','required'),
+            array('id','required'),
+            array('id','validateId'),
             array('files, removeFileId, docMasterId, no_of_attm','safe'),
         );
+    }
+
+    public function validateId($attribute, $params){
+        $rows = Yii::app()->db->createCommand()->select("*")->from("cy_credit_point")
+            ->where("request_id=:id and start_num = end_num", array(':id'=>$this->id))->queryAll();
+        if ($rows){
+            $long_type = $rows[0]["long_type"];
+            if(count($rows)!=$long_type){
+                $message = Yii::t('charity',"The charity has been redeemed and cannot be returned");
+                $this->addError($attribute,$message);
+            }
+        }else{
+            $message = Yii::t('charity',"The charity has been redeemed and cannot be returned");
+            $this->addError($attribute,$message);
+        }
     }
 
     public function retrieveData($index)
@@ -118,6 +133,66 @@ class SearchCreditForm extends CFormModel
                 break;
             }
         }
+        return true;
+    }
+
+
+    public function saveData()
+    {
+        $connection = Yii::app()->db;
+        $transaction=$connection->beginTransaction();
+        try {
+            $this->saveGoods($connection);
+            $transaction->commit();
+        }
+        catch(Exception $e) {
+            $transaction->rollback();
+            throw new CHttpException(404,'Cannot update. ('.$e->getMessage().')');
+        }
+    }
+
+    protected function saveGoods(&$connection) {
+
+        //補回學分
+        $this->cancelCredit();
+
+        $sql = '';
+        switch ($this->scenario) {
+            case 'cancel':
+                $sql = "update cy_credit_request set
+							state = 0, 
+							luu = :luu
+						where id = :id
+						";
+                break;
+        }
+        if (empty($sql)) return false;
+
+        $city = Yii::app()->user->city();
+        $uid = Yii::app()->user->id;
+
+        $command=$connection->createCommand($sql);
+        if (strpos($sql,':id')!==false)
+            $command->bindParam(':id',$this->id,PDO::PARAM_INT);
+
+        if (strpos($sql,':luu')!==false)
+            $command->bindParam(':luu',$uid,PDO::PARAM_STR);
+        $command->execute();
+
+        return true;
+    }
+
+
+    protected function cancelCredit() {
+        //取消慈善分
+        if($this->scenario == "cancel"){
+            Yii::app()->db->createCommand()->delete("cy_credit_point", "request_id=:request_id",array("request_id"=>$this->id));
+        }
+        return true;
+    }
+
+    //判斷輸入框能否修改
+    public function getInputBool(){
         return true;
     }
 }

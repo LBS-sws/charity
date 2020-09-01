@@ -243,19 +243,19 @@ class AuditPrizeForm extends CFormModel
             if(!empty($sum)){
                 $sum = intval($sum);//需要扣減的總學分
                 $year = date("Y",strtotime($row["apply_date"]));//申請的年份
-                $creditList = Yii::app()->db->createCommand()->select("id,long_type,end_num,request_id")->from("cy_credit_point")
-                    ->where("employee_id=:employee_id and year=:year and end_num>0",array(":employee_id"=>$row["employee_id"],":year"=>$year))
-                    ->order('long_type,lcu asc')->queryAll();
+                $creditList = Yii::app()->db->createCommand()->select("a.id,a.long_type,a.end_num,a.request_id")->from("cy_credit_point a")
+                    ->leftJoin('cy_credit_request b',"a.request_id = b.id")
+                    ->where("a.employee_id=:employee_id and a.year=:year and a.end_num>0",array(":employee_id"=>$row["employee_id"],":year"=>$year))
+                    ->order('b.apply_date ASC')->queryAll();
                 $num = 0;//已經扣減的學分
                 if($creditList){
                     foreach ($creditList as $credit){
                         $nowNum = intval($credit["end_num"]);
                         $num+=$nowNum;
-                        $updateNum = $num<$sum?0:$num-$sum;
-                        Yii::app()->db->createCommand()->update('cy_credit_point', array(
-                            //'start_num'=>$updateNum,//總積分不應該變
-                            'end_num'=>$updateNum,
-                        ), 'request_id=:request_id and year >= :year', array(':request_id'=>$credit["request_id"],':year'=>$year));
+                        $updateNum = $num<$sum?$nowNum:$sum-$num+$nowNum;
+
+                        $sql = "update cy_credit_point set end_num=end_num-$updateNum where request_id=".$credit["request_id"]." and year >= $year";
+                        Yii::app()->db->createCommand($sql)->execute();
                         if($num>=$sum){
                             break;
                         }

@@ -93,22 +93,12 @@ class AuditCreditList extends CListPageModel
         switch ($status){
             case 1:
                 return array(
-                    "status"=>Yii::t("integral","pending approval"),
+                    "status"=>Yii::t("charity","pending approval"),
                     "style"=>" text-yellow"
                 );//已提交，待審核
-/*            case 2:
-                return array(
-                    "status"=>Yii::t("integral","Rejected"),
-                    "style"=>" text-red"
-                );//已拒絕
-            case 3:
-                return array(
-                    "status"=>Yii::t("integral","Finish approval"),
-                    "style"=>" text-success"
-                );//審核通過*/
             default:
                 return array(
-                    "status"=>Yii::t("integral","Error"),
+                    "status"=>Yii::t("charity","Error"),
                     "style"=>" "
                 );//已拒絕
         }

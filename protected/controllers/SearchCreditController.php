@@ -26,6 +26,10 @@ class SearchCreditController extends Controller
                 'actions'=>array('index','view','FileDownload'),
                 'expression'=>array('SearchCreditController','allowReadOnly'),
             ),
+            array('allow',
+                'actions'=>array('cancel'),
+                'expression'=>array('SearchCreditController','allowReadCancel'),
+            ),
             array('deny',  // deny all users
                 'users'=>array('*'),
             ),
@@ -33,6 +37,9 @@ class SearchCreditController extends Controller
     }
     public static function allowReadOnly() {
         return Yii::app()->user->validFunction('SR01');
+    }
+    public static function allowReadCancel() {
+        return Yii::app()->user->validFunction('ZR01');
     }
 
 	public function actionIndex($pageNum=0) 
@@ -77,6 +84,23 @@ class SearchCreditController extends Controller
             }
         } else {
             throw new CHttpException(404,'Record not found.');
+        }
+    }
+
+    public function actionCancel()
+    {
+        if (isset($_POST['SearchCreditForm'])) {
+            $model = new SearchCreditForm("cancel");
+            $model->attributes = $_POST['SearchCreditForm'];
+            if ($model->validate()) {
+                $model->saveData();
+                Dialog::message(Yii::t('dialog','Information'), Yii::t('dialog','Void Done'));
+                $this->redirect(Yii::app()->createUrl('searchCredit/index'));
+            } else {
+                $message = CHtml::errorSummary($model);
+                Dialog::message(Yii::t('dialog','Validation Message'), $message);
+                $this->render('form',array('model'=>$model,));
+            }
         }
     }
 }

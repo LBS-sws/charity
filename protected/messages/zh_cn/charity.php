@@ -86,6 +86,7 @@ return array(
     'Available Gift'=>'可用慈善分',
     'prize remark'=>'兑换说明',
 
+    'The charity has been redeemed and cannot be returned'=>'该慈善分已被兑换，无法退回',
     'Available credits = total credits - credits deducted from the award application'=>'可用慈善分 = 总慈善分 - 兑换使用的慈善分',
     'Total credits = all credits for the year'=>'总慈善分 = 截止到本年度的总慈善分',
 );

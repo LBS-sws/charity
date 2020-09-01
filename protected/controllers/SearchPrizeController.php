@@ -26,18 +26,22 @@ class SearchPrizeController extends Controller
                 'actions'=>array('index','view'),
                 'expression'=>array('SearchPrizeController','allowReadOnly'),
             ),
+            array('allow',
+                'actions'=>array('cancel'),
+                'expression'=>array('SearchPrizeController','allowReadCancel'),
+            ),
             array('deny',  // deny all users
                 'users'=>array('*'),
             ),
         );
     }
 
-    public static function allowReadWrite() {
-        return Yii::app()->user->validRWFunction('SR03');
-    }
-
     public static function allowReadOnly() {
         return Yii::app()->user->validFunction('SR03');
+    }
+
+    public static function allowReadCancel() {
+        return Yii::app()->user->validFunction('ZR02');
     }
 
     public function actionIndex($pageNum=0)
@@ -64,6 +68,23 @@ class SearchPrizeController extends Controller
             throw new CHttpException(404,'The requested page does not exist.');
         } else {
             $this->render('form',array('model'=>$model,));
+        }
+    }
+
+    public function actionCancel()
+    {
+        if (isset($_POST['SearchPrizeForm'])) {
+            $model = new SearchPrizeForm("cancel");
+            $model->attributes = $_POST['SearchPrizeForm'];
+            if ($model->validate()) {
+                $model->saveData();
+                Dialog::message(Yii::t('dialog','Information'), Yii::t('dialog','Void Done'));
+                $this->redirect(Yii::app()->createUrl('searchPrize/index'));
+            } else {
+                $message = CHtml::errorSummary($model);
+                Dialog::message(Yii::t('dialog','Validation Message'), $message);
+                $this->render('form',array('model'=>$model,));
+            }
         }
     }
 

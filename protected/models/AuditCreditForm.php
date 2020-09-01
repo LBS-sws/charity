@@ -69,8 +69,22 @@ class AuditCreditForm extends CFormModel
             array('id, employee_id, employee_name, s_remark, credit_type, credit_point, city, validity, apply_date, images_url, remark, reject_note, lcu, luu, lcd, lud','safe'),
 
             array('reject_note','required',"on"=>"reject"),
-            array('id','required',"on"=>"reject"),
+            array('id','required'),
+            array('id','validateId'),
         );
+    }
+
+    public function validateId($attribute, $params){
+        $rows = Yii::app()->db->createCommand()->select("*")->from("cy_credit_request")
+            ->where("id=:id and state = 1", array(':id'=>$this->id))->queryRow();
+        if ($rows){
+            $this->employee_id = $rows["employee_id"];
+            $this->apply_date = $rows["apply_date"];
+            $this->credit_point = $rows["credit_point"];
+        }else{
+            $message = Yii::t('charity','Charity Name'). Yii::t('charity',' Did not find');
+            $this->addError($attribute,$message);
+        }
     }
 
 

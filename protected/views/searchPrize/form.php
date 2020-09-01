@@ -33,11 +33,18 @@ $this->pageTitle=Yii::app()->name . ' - searchPrize Form';
                     'submit'=>Yii::app()->createUrl('searchPrize/index')));
                 ?>
             </div>
+            <div class="btn-group pull-right" role="group">
+                <?php if (Yii::app()->user->validFunction('ZR02')): ?>
+                    <?php echo TbHtml::button('<span class="fa fa-remove"></span> '.Yii::t('dialog','Cancel'), array(
+                            'name'=>'btnDelete','id'=>'btnDelete','data-toggle'=>'modal','data-target'=>'#canceldialog',)
+                    );
+                    ?>
+                <?php endif; ?>
+            </div>
         </div></div>
 
     <div class="box box-info">
         <div class="box-body">
-            <?php echo $form->hiddenField($model, 'scenario'); ?>
             <?php echo $form->hiddenField($model, 'state'); ?>
             <?php echo $form->hiddenField($model, 'id'); ?>
             <?php if ($model->state == 2): ?>
@@ -63,9 +70,21 @@ $this->pageTitle=Yii::app()->name . ' - searchPrize Form';
     </div>
 </section>
 
+<?php
+$this->renderPartial('//site/canceldialog');
+?>
 
 <?php
 
+$js = "
+//取消事件
+$('#btnCancelData').on('click',function() {
+	$('#canceldialog').modal('hide');
+	var elm=$('#btnCancelData');
+	jQuery.yii.submitForm(elm,'".Yii::app()->createUrl('searchPrize/cancel')."',{});
+});
+";
+Yii::app()->clientScript->registerScript('calcFunction',$js,CClientScript::POS_READY);
 
 $js = Script::genReadonlyField();
 Yii::app()->clientScript->registerScript('readonlyClass',$js,CClientScript::POS_READY);

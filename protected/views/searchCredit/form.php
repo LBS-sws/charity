@@ -34,6 +34,12 @@ $this->pageTitle=Yii::app()->name . ' - searchCredit Form';
                 ?>
             </div>
             <div class="btn-group pull-right" role="group">
+                <?php if (Yii::app()->user->validFunction('ZR02')): ?>
+                    <?php echo TbHtml::button('<span class="fa fa-remove"></span> '.Yii::t('dialog','Cancel'), array(
+                            'name'=>'btnDelete','id'=>'btnDelete','data-toggle'=>'modal','data-target'=>'#canceldialog',)
+                    );
+                    ?>
+                <?php endif; ?>
                 <?php
                 $counter = ($model->no_of_attm['cyral'] > 0) ? ' <span id="doccyral" class="label label-info">'.$model->no_of_attm['cyral'].'</span>' : ' <span id="doccyral"></span>';
                 echo TbHtml::button('<span class="fa  fa-file-text-o"></span> '.Yii::t('misc','Attachment').$counter, array(
@@ -45,7 +51,6 @@ $this->pageTitle=Yii::app()->name . ' - searchCredit Form';
 
     <div class="box box-info">
         <div class="box-body">
-            <?php echo $form->hiddenField($model, 'scenario'); ?>
             <?php echo $form->hiddenField($model, 'state'); ?>
             <?php echo $form->hiddenField($model, 'id'); ?>
             <?php if ($model->state == 2): ?>
@@ -80,6 +85,10 @@ $this->pageTitle=Yii::app()->name . ' - searchCredit Form';
 </section>
 
 
+<?php
+$this->renderPartial('//site/canceldialog');
+?>
+
 <?php $this->renderPartial('//site/fileupload',array('model'=>$model,
     'form'=>$form,
     'doctype'=>'CYRAL',
@@ -88,8 +97,17 @@ $this->pageTitle=Yii::app()->name . ' - searchCredit Form';
 ));
 ?>
 <?php
-Script::genFileUpload($model,$form->id,'CYRAL');
+$js = "
+//取消事件
+$('#btnCancelData').on('click',function() {
+	$('#canceldialog').modal('hide');
+	var elm=$('#btnCancelData');
+	jQuery.yii.submitForm(elm,'".Yii::app()->createUrl('searchCredit/cancel')."',{});
+});
+";
+Yii::app()->clientScript->registerScript('calcFunction',$js,CClientScript::POS_READY);
 
+Script::genFileUpload($model,$form->id,'CYRAL');
 
 $js = Script::genReadonlyField();
 Yii::app()->clientScript->registerScript('readonlyClass',$js,CClientScript::POS_READY);

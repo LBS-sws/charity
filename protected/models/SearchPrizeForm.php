@@ -65,7 +65,22 @@ class SearchPrizeForm extends CFormModel
             array('id, employee_id, employee_name, apply_num, prize_remark, prize_name, prize_type, credit_type, credit_point, city, validity, apply_date, images_url, remark, reject_note, lcu, luu, lcd, lud','safe'),
 
             array('id','required'),
+            array('id','validateId'),
         );
+    }
+
+    public function validateId($attribute, $params){
+        $rows = Yii::app()->db->createCommand()->select("*")->from("cy_prize_request")
+            ->where("id=:id and state = 3", array(':id'=>$this->id))->queryRow();
+        if ($rows){
+            $this->employee_id = $rows["employee_id"];
+            $this->apply_date = $rows["apply_date"];
+            $this->apply_num = $rows["apply_num"];
+            $this->prize_point = $rows["prize_point"];
+        }else{
+            $message = Yii::t('charity','Prize Name'). Yii::t('charity',' Did not find');
+            $this->addError($attribute,$message);
+        }
     }
 
     public function retrieveData($index)
@@ -105,6 +120,84 @@ class SearchPrizeForm extends CFormModel
                 $this->city = $row['city'];
                 $this->apply_date = CGeneral::toDate($row['apply_date']);
                 break;
+            }
+        }
+        return true;
+    }
+
+    public function saveData()
+    {
+        $connection = Yii::app()->db;
+        $transaction=$connection->beginTransaction();
+        try {
+            $this->saveGoods($connection);
+            $transaction->commit();
+        }
+        catch(Exception $e) {
+            $transaction->rollback();
+            throw new CHttpException(404,'Cannot update. ('.$e->getMessage().')');
+        }
+    }
+
+    protected function saveGoods(&$connection) {
+
+        //補回學分
+        $this->cancelPrize();
+
+        $sql = '';
+        switch ($this->scenario) {
+            case 'cancel':
+                $sql = "update cy_prize_request set
+							state = 0, 
+							luu = :luu
+						where id = :id
+						";
+                break;
+        }
+        if (empty($sql)) return false;
+
+        $city = Yii::app()->user->city();
+        $uid = Yii::app()->user->id;
+
+        $command=$connection->createCommand($sql);
+        if (strpos($sql,':id')!==false)
+            $command->bindParam(':id',$this->id,PDO::PARAM_INT);
+
+        if (strpos($sql,':luu')!==false)
+            $command->bindParam(':luu',$uid,PDO::PARAM_STR);
+        $command->execute();
+
+        return true;
+    }
+
+
+    protected function cancelPrize() {
+        //取消兌換
+        if($this->scenario == "cancel"){
+            $sum = $this->prize_point*$this->apply_num;
+            if(!empty($sum)){
+                $sum = intval($sum);//需要補回的總學分
+                $year = date("Y",strtotime($this->apply_date));//申請的年份
+                $creditList = Yii::app()->db->createCommand()->select("a.id,a.long_type,a.start_num,a.end_num,a.request_id")->from("cy_credit_point a")
+                    ->leftJoin('cy_credit_request b',"a.request_id = b.id")
+                    ->where("a.employee_id=:employee_id and a.year=:year and a.end_num != a.start_num",array(":employee_id"=>$this->employee_id,":year"=>$year))
+                    ->order('b.apply_date ASC')->queryAll();
+                $num = 0;//已經補回的學分
+                if($creditList){
+                    foreach ($creditList as $credit){
+                        $nowNum = intval($credit["start_num"])-intval($credit["end_num"]);
+                        $num+=$nowNum;
+                        $updateNum = $num>$sum?$sum-$num+$nowNum:$nowNum;
+
+                        $sql = "update cy_credit_point set end_num=end_num+$updateNum where request_id=".$credit["request_id"]." and year >= $year";
+                        Yii::app()->db->createCommand($sql)->execute();
+                        if($num>=$sum){
+                            break;
+                        }
+                    }
+                }else{
+                    throw new CHttpException(404,'Cannot update.33333');
+                }
             }
         }
         return true;

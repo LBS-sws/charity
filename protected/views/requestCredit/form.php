@@ -11,6 +11,7 @@ $this->pageTitle=Yii::app()->name . ' - requestCredit Form';
 )); ?>
 <style>
     td.disabled.day{color: #c7c7c7;}
+    .datepicker.datepicker-dropdown{z-index: 99999 !important;}
 </style>
 
 <section class="content-header">
