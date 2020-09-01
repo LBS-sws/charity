@@ -322,13 +322,13 @@ class RequestCreditForm extends CFormModel
                 ->from("gr_credit_request a")
                 ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
                 ->where("a.id=:id", array(':id'=>$this->id))->queryRow();
-            $description="学分申请 - ".$row["employee_name"];
-            $subject="学分申请 - ".$row["employee_name"];
+            $description="慈善分申请 - ".$row["employee_name"];
+            $subject="慈善分申请 - ".$row["employee_name"];
             $message="<p>员工编号：".$row["employee_code"]."</p>";
             $message.="<p>员工姓名：".$row["employee_name"]."</p>";
             $message.="<p>员工城市：".CGeneral::getCityName($row["s_city"])."</p>";
             $message.="<p>申请时间：".CGeneral::toDate($row["apply_date"])."</p>";
-            $message.="<p>学分数值：".$row["credit_point"]."</p>";
+            $message.="<p>慈善分数值：".$row["credit_point"]."</p>";
             $email->setDescription($description);
             $email->setMessage($message);
             $email->setSubject($subject);

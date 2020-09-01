@@ -173,9 +173,9 @@ class AuditCreditForm extends CFormModel
     //發送郵件
     protected function sendEmail(){
         if($this->scenario == "audit"){
-            $str = "学分审核通过";
+            $str = "慈善分审核通过";
         }else{
-            $str = "学分被拒绝";
+            $str = "慈善分被拒绝";
         }
         $email = new Email();
         $suffix = Yii::app()->params['envSuffix'];
@@ -189,7 +189,7 @@ class AuditCreditForm extends CFormModel
         $message.="<p>员工姓名：".$row["employee_name"]."</p>";
         $message.="<p>员工城市：".CGeneral::getCityName($row["s_city"])."</p>";
         $message.="<p>申请时间：".CGeneral::toDate($row["apply_date"])."</p>";
-        $message.="<p>学分数值：".$row["credit_point"]."</p>";
+        $message.="<p>慈善分数值：".$row["credit_point"]."</p>";
         if($this->scenario != "audit"){
             $message.="<p>拒绝原因：".$row["reject_note"]."</p>";
         }
