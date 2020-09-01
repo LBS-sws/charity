@@ -1,0 +1,5 @@
+.link-edit{display: block;margin: 0px -10px 10px -10px;border-bottom: 2px solid #00c0ef;}
+.link-edit>.link-edit-title{display: inline-block;font-weight: bold;font-size: 115%;margin-bottom: -2px;background: #fff;margin-left: 15px;padding: 6px 12px;
+  border-top:2px solid #00c0ef;border-left: 2px solid #00c0ef;border-right: 2px solid #00c0ef;
+  border-top-left-radius: 5px;border-top-right-radius: 5px;
+}
