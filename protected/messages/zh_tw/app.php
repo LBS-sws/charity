@@ -19,7 +19,7 @@ return array(
 'Quiz'=>'培訓測驗系統',
 'Academic Credit'=>'學分系統',
 'Integral'=>'學分系統',
-    'Charity'=>'慈善分系统',
+'Charitable Credit'=>'慈善分系統',
 'Online Library'=>'網上文庫',
 'System Use'=>'系統使用',
 

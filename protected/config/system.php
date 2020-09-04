@@ -29,7 +29,7 @@ return array(
     ),
     'cy'=>array(
         'webroot'=>'http://192.168.1.5/charity',
-        'name'=>'Charity',
+        'name'=>'Charitable Credit',
         'icon'=>'fa fa-object-ungroup',
     ),
     'exa'=>array(
@@ -53,6 +53,7 @@ return array(
             'fields'=>'fieldsOnlib',
         ),
     ),
+
     /*
         'apps'=>array(
             'webroot'=>'https://app.lbsgroup.com.tw/web',
