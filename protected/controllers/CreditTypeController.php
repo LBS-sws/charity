@@ -128,7 +128,7 @@ class CreditTypeController extends Controller
     public function actionAjaxDepartment(){
         if(Yii::app()->request->isAjaxRequest) {//是否ajax请求
             $department = $_POST['department'];
-            $arr = creditTypeForm::searchDepartment($department);
+            $arr = CreditTypeForm::searchDepartment($department);
             echo CJSON::encode($arr);
         }else{
             echo "Error:404";
