@@ -34,18 +34,26 @@
     </div>
 </div>
 <div class="form-group">
-    <?php echo $form->labelEx($model,'credit_point',array('class'=>"col-sm-2 control-label")); ?>
-    <div class="col-sm-3">
-        <?php echo $form->textField($model, 'credit_point',
-            array('readonly'=>(true),'id'=>'integral')
-        ); ?>
-    </div>
-</div>
-<div class="form-group">
     <?php echo $form->labelEx($model,'rule',array('class'=>"col-sm-2 control-label")); ?>
     <div class="col-sm-5">
         <?php echo $form->textArea($model, 'rule',
             array('readonly'=>(true),'rows'=>4,'cols'=>50,'id'=>'rule')
+        ); ?>
+    </div>
+</div>
+<div class="form-group">
+    <?php echo $form->labelEx($model,'review_str',array('class'=>"col-sm-2 control-label")); ?>
+    <div class="col-sm-3">
+        <?php echo $form->textField($model, 'review_str',
+            array('readonly'=>(true),'id'=>'review_str')
+        ); ?>
+    </div>
+</div>
+<div class="form-group">
+    <?php echo $form->labelEx($model,'credit_point',array('class'=>"col-sm-2 control-label")); ?>
+    <div class="col-sm-3">
+        <?php echo $form->textField($model, 'credit_point',
+            array('readonly'=>(true),'id'=>'integral')
         ); ?>
     </div>
 </div>
@@ -72,6 +80,7 @@
                         var list = data.list;
                         $("#integral").val(list["charity_point"]);
                         $("#rule").val(list["rule"]);
+                        $("#review_str").val(list["review_str"]);
                     }
                 }
             });

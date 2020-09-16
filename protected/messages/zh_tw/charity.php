@@ -89,5 +89,6 @@ return array(
     'The charity has been redeemed and cannot be returned'=>'該慈善分已被兌換，無法退回',
     'Available credits = total credits - credits deducted from the award application'=>'可用慈善分 = 總慈善分 - 兌換使用的慈善分',
     'Total credits = all credits for the year'=>'總慈善分 = 截止到本年度的總慈善分',
+    'Review timer number'=>'每次考核時間次數',
 );
 ?>

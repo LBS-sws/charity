@@ -25,7 +25,7 @@ $this->pageTitle=Yii::app()->name . ' - Credit type allocation';
 <section class="content">
     <div class="box">
         <div class="box-body">
-            <div class="btn-group pull-right" role="group">
+            <div class="btn-group" role="group">
                 <?php
                 //var_dump(Yii::app()->session['rw_func']);
                 if (Yii::app()->user->validRWFunction('CY01'))

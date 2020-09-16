@@ -22,6 +22,7 @@ class RequestCreditForm extends CFormModel
 	public $state = 0;//狀態 0：草稿 1：發送  2：拒絕  3：完成  4:確定
 	public $city;
     public $rule;
+    public $review_str;
 	public $lcu;
 	public $luu;
 	public $lcd;
@@ -60,6 +61,7 @@ class RequestCreditForm extends CFormModel
             'reject_note'=>Yii::t('charity','Reject Note'),
             'city'=>Yii::t('charity','City'),
             'apply_date'=>Yii::t('charity','apply for time'),
+            'review_str'=>Yii::t('charity','Review timer number'),
 		);
 	}
 
@@ -69,7 +71,7 @@ class RequestCreditForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('id, employee_id, employee_name, credit_type, credit_point,charity_name, charity_point, apply_date, images_url, rule, remark, reject_note, lcu, luu, lcd, lud','safe'),
+			array('id, employee_id, employee_name, credit_type,rule,review_str, credit_point,charity_name, charity_point, apply_date, images_url, rule, remark, reject_note, lcu, luu, lcd, lud','safe'),
 
 			array('apply_date','required'),
 			array('employee_id','required'),
@@ -187,7 +189,7 @@ class RequestCreditForm extends CFormModel
         $suffix = Yii::app()->params['envSuffix'];
         //$city_allow = Yii::app()->user->city_allow();
         $city_allow = Yii::app()->user->getEmployeeCityAll();
-        $rows = Yii::app()->db->createCommand()->select("a.*,b.position,b.name as employee_name,d.rule,d.remark as s_remark,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
+        $rows = Yii::app()->db->createCommand()->select("a.*,d.review_str,b.position,b.name as employee_name,d.rule,d.remark as s_remark,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
             ->from("cy_credit_request a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
             ->leftJoin("cy_credit_type d","a.credit_type = d.id")
@@ -207,6 +209,7 @@ class RequestCreditForm extends CFormModel
                 $this->remark = $row['remark'];
                 $this->reject_note = $row['reject_note'];
                 $this->state = $row['state'];
+                $this->review_str = $row['review_str'];
                 $this->lcu = $row['lcu'];
                 $this->rule = $row['rule'];
                 $this->luu = $row['luu'];

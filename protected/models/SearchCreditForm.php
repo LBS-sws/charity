@@ -24,6 +24,7 @@ class SearchCreditForm extends CFormModel
     public $lcd;
     public $lud;
     public $rule;
+    public $review_str;
     public $position;
     public $s_remark;
 
@@ -60,6 +61,7 @@ class SearchCreditForm extends CFormModel
             'reject_note'=>Yii::t('charity','Reject Note'),
             'city'=>Yii::t('charity','City'),
             'apply_date'=>Yii::t('charity','apply for time'),
+            'review_str'=>Yii::t('charity','Review timer number'),
         );
     }
 
@@ -101,7 +103,7 @@ class SearchCreditForm extends CFormModel
         if(Yii::app()->user->validFunction('ZR03')){
             $citySql = " a.id>0 ";
         }
-        $rows = Yii::app()->db->createCommand()->select("a.*,b.position,b.name as employee_name,d.rule,d.remark as s_remark,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
+        $rows = Yii::app()->db->createCommand()->select("a.*,d.review_str,b.position,b.name as employee_name,d.rule,d.remark as s_remark,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
             ->from("cy_credit_request a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
             ->leftJoin("cy_credit_type d","a.credit_type = d.id")
@@ -120,6 +122,7 @@ class SearchCreditForm extends CFormModel
                 $this->remark = $row['remark'];
                 $this->reject_note = $row['reject_note'];
                 $this->state = $row['state'];
+                $this->review_str = $row['review_str'];
                 $this->lcu = $row['lcu'];
                 $this->position = $row['position'];
                 $this->luu = $row['luu'];

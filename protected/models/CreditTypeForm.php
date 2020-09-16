@@ -11,6 +11,7 @@ class CreditTypeForm extends CFormModel
 	public $bumen;
 	public $bumen_ex;
 	public $rule;
+	public $review_str;
 	public $z_index=0;
 	public $year_sw=0;
 	public $year_max=0;
@@ -32,6 +33,7 @@ class CreditTypeForm extends CFormModel
             'year_max'=>Yii::t('charity','Limited number'),
             'z_index'=>Yii::t('charity','z_index'),
             'remark'=>Yii::t('charity','Remark'),
+            'review_str'=>Yii::t('charity','Review timer number'),
 		);
 	}
 
@@ -41,7 +43,7 @@ class CreditTypeForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('id,charity_code,charity_name,charity_point,rule,year_sw,year_max,remark,z_index,bumen,bumen_ex','safe'),
+			array('id,charity_code,charity_name,review_str,charity_point,rule,year_sw,year_max,remark,z_index,bumen,bumen_ex','safe'),
             array('charity_code','required'),
             array('charity_name','required'),
             array('charity_point','required'),
@@ -113,6 +115,7 @@ class CreditTypeForm extends CFormModel
                 $this->z_index = $row['z_index'];
                 $this->validity = $row['validity'];
                 $this->remark = $row['remark'];
+                $this->review_str = $row['review_str'];
                 break;
 			}
 		}
@@ -196,15 +199,16 @@ class CreditTypeForm extends CFormModel
                 break;
             case 'new':
                 $sql = "insert into cy_credit_type(
-							charity_name,charity_code,charity_point, bumen, bumen_ex, rule, remark, year_sw, year_max, validity, z_index, lcu, city
+							charity_name,review_str,charity_code,charity_point, bumen, bumen_ex, rule, remark, year_sw, year_max, validity, z_index, lcu, city
 						) values (
-							:charity_name,:charity_code,:charity_point, :bumen, :bumen_ex, :rule, :remark, :year_sw, :year_max, 5, :z_index, :lcu, :city
+							:charity_name,:review_str,:charity_code,:charity_point, :bumen, :bumen_ex, :rule, :remark, :year_sw, :year_max, 5, :z_index, :lcu, :city
 						)";
                 break;
             case 'edit':
                 $sql = "update cy_credit_type set
 							charity_name = :charity_name, 
 							charity_code = :charity_code, 
+							review_str = :review_str, 
 							charity_point = :charity_point, 
 							bumen = :bumen, 
 							bumen_ex = :bumen_ex, 
@@ -232,6 +236,8 @@ class CreditTypeForm extends CFormModel
             $command->bindParam(':charity_code',$this->charity_code,PDO::PARAM_STR);
         if (strpos($sql,':charity_name')!==false)
             $command->bindParam(':charity_name',$this->charity_name,PDO::PARAM_STR);
+        if (strpos($sql,':review_str')!==false)
+            $command->bindParam(':review_str',$this->review_str,PDO::PARAM_STR);
         if (strpos($sql,':bumen_ex')!==false)
             $command->bindParam(':bumen_ex',$this->bumen_ex,PDO::PARAM_STR);
         if (strpos($sql,':bumen')!==false)
