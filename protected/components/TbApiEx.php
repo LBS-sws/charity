@@ -31,6 +31,7 @@ class TbApiEx extends TbApi {
 		$cs->registerCssFile($this->assetPath.'/bower_components/Ionicons/css/ionicons.min.css');
 		$cs->registerCssFile($this->assetPath.'/dist/css/AdminLTE.min.css');
 		$cs->registerCssFile($this->assetPath.'/dist/css/skins/_all-skins.min.css');
+		$cs->registerCssFile($this->assetPath.'/dist/css/skins/skin-teal-light.min.css');
 		$cs->registerCssFile($this->assetPath.'/plugins/iCheck/all.css');
 //		$cs->registerCssFile($this->assetPath.'/bower_components/morris.js/morris.css');
 //		$cs->registerCssFile($this->assetPath.'bower_components/jvectormap/jquery-jvectormap.css');

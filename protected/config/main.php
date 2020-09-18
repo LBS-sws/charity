@@ -143,6 +143,6 @@ return array(
 		'systemId'=>'cy',
 		'envSuffix'=>'dev',
         'appname'=>'LBS DMS (UAT)',
-        'appcolor'=>'skin-yellow',
+        'appcolor'=>'skin-teal-light',
 	),
 );
