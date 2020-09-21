@@ -71,7 +71,7 @@ class WebUser extends CWebUser
 	public function staff_list() {
         $uid = Yii::app()->user->id;
         $suffix = Yii::app()->params['envSuffix'];
-        $rs = Yii::app()->db->createCommand()->select("b.id,b.name,b.code,b.city,b.position")->from("hr$suffix.hr_binding a")
+        $rs = Yii::app()->db->createCommand()->select("b.id,b.name,b.code,b.city,b.position,b.department")->from("hr$suffix.hr_binding a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
             ->where("a.user_id ='$uid' and staff_status=0")->queryRow();
         if($rs){
