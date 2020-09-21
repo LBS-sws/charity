@@ -163,7 +163,7 @@ class CreditTypeForm extends CFormModel
         }
         $rows = Yii::app()->db->createCommand()->select("a.*,b.name as city_name")->from("hr$suffix.hr_dept a")
             ->leftjoin("security$suffix.sec_city b","b.code = a.city")
-            ->where("type = 0 $sql")->queryAll();
+            ->where("a.type = 0 $sql")->queryAll();
         if($rows){
             foreach ($rows as $row){
                 $arr[$row["id"]] = $row["name"]."（".$row["city_name"]."）";

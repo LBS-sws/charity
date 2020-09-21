@@ -7,6 +7,7 @@ class AuditCreditForm extends CFormModel
     public $employee_id;
     public $employee_name;
     public $position;
+    public $department;
     public $credit_type;
     public $credit_point;
     public $charity_name;
@@ -93,7 +94,7 @@ class AuditCreditForm extends CFormModel
     public function retrieveData($index) {
         $city_allow = Yii::app()->user->city_allow();
         $suffix = Yii::app()->params['envSuffix'];
-        $rows = Yii::app()->db->createCommand()->select("a.*,d.remark as s_remark,d.validity,b.position,b.name as employee_name,b.city as s_city,d.review_str,d.rule,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
+        $rows = Yii::app()->db->createCommand()->select("a.*,d.remark as s_remark,d.validity,b.department,b.position,b.name as employee_name,b.city as s_city,d.review_str,d.rule,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
             ->from("cy_credit_request a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
             ->leftJoin("cy_credit_type d","a.credit_type = d.id")
@@ -103,6 +104,7 @@ class AuditCreditForm extends CFormModel
                 $this->id = $row['id'];
                 $this->employee_id = $row['employee_id'];
                 $this->employee_name = $row['employee_name'];
+                $this->department = $row['department'];
                 $this->position = $row['position'];
                 $this->credit_type = $row['credit_type'];
                 $this->credit_point = $row['credit_point'];

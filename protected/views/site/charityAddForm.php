@@ -28,7 +28,7 @@
 <div class="form-group">
     <?php echo $form->labelEx($model,'credit_type',array('class'=>"col-sm-2 control-label")); ?>
     <div class="col-sm-6">
-        <?php echo $form->dropDownListTwo($model, 'credit_type',CreditTypeForm::getCreditTypeList($model->position),
+        <?php echo $form->dropDownListTwo($model, 'credit_type',CreditTypeForm::getCreditTypeList($model->department),
             array('readonly'=>($readonly),'id'=>'set_id')
         ); ?>
     </div>

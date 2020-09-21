@@ -28,6 +28,7 @@ class RequestCreditForm extends CFormModel
 	public $lcd;
 	public $lud;
 	public $position;
+	public $department;
 
 
     public $no_of_attm = array(
@@ -85,7 +86,7 @@ class RequestCreditForm extends CFormModel
 
 	public function validateCharity($attribute, $params){
         $rows = Yii::app()->db->createCommand()->select("*")->from("cy_credit_type")
-            ->where("id=:id and (bumen=''or FIND_IN_SET(:bumen,bumen))", array(':id'=>$this->credit_type,':bumen'=>$this->position))->queryRow();
+            ->where("id=:id and (bumen=''or FIND_IN_SET(:bumen,bumen))", array(':id'=>$this->credit_type,':bumen'=>$this->department))->queryRow();
         if ($rows){
             if($rows["year_sw"]==1){
                 $year = date("Y");
@@ -111,6 +112,7 @@ class RequestCreditForm extends CFormModel
         if (!empty($rows)){
             $this->employee_id = $rows["id"];
             $this->position = $rows["position"];
+            $this->department = $rows["department"];
             $this->city = $rows["city"];
         }else{
             $message = Yii::t('charity','Employee Name'). Yii::t('charity',' Did not find');
@@ -189,7 +191,7 @@ class RequestCreditForm extends CFormModel
         $suffix = Yii::app()->params['envSuffix'];
         //$city_allow = Yii::app()->user->city_allow();
         $city_allow = Yii::app()->user->getEmployeeCityAll();
-        $rows = Yii::app()->db->createCommand()->select("a.*,d.review_str,b.position,b.name as employee_name,d.rule,d.remark as s_remark,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
+        $rows = Yii::app()->db->createCommand()->select("a.*,d.review_str,b.department,b.position,b.name as employee_name,d.rule,d.remark as s_remark,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
             ->from("cy_credit_request a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
             ->leftJoin("cy_credit_type d","a.credit_type = d.id")
@@ -202,6 +204,7 @@ class RequestCreditForm extends CFormModel
 				$this->employee_id = $row['employee_id'];
 				$this->employee_name = $row['employee_name'];
 				$this->position = $row['position'];
+				$this->department = $row['department'];
                 $this->credit_type = $row['credit_type'];
                 $this->credit_point = $row['credit_point'];
                 $this->apply_date = $row['apply_date'];
@@ -344,7 +347,7 @@ class RequestCreditForm extends CFormModel
     public function validateNowUser($bool = false){
         $uid = Yii::app()->user->id;
         $suffix = Yii::app()->params['envSuffix'];
-        $rs = Yii::app()->db->createCommand()->select("b.id,b.name,b.position")->from("hr$suffix.hr_binding a")
+        $rs = Yii::app()->db->createCommand()->select("b.id,b.name,b.position,b.department")->from("hr$suffix.hr_binding a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
             ->where("a.user_id ='$uid'")->queryRow();
         if($rs){
@@ -352,6 +355,7 @@ class RequestCreditForm extends CFormModel
                 $this->employee_id = $rs["id"];
                 $this->employee_name = $rs["name"];
                 $this->position = $rs["position"];
+                $this->department = $rs["department"];
             }
             return true; //已綁定員工
         }else{
