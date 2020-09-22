@@ -338,7 +338,7 @@ class RequestCreditForm extends CFormModel
             $email->setDescription($description);
             $email->setMessage($message);
             $email->setSubject($subject);
-            $email->addEmailToPrefixAndCity("GA04",$row["s_city"]);
+            $email->addEmailToPrefixAndCity("GA01",$row["s_city"]);
             $email->sent();
         }
     }

@@ -353,7 +353,7 @@ class RequestPrizeForm extends CFormModel
             $email->setDescription($description);
             $email->setMessage($message);
             $email->setSubject($subject);
-            $email->addEmailToPrefixAndCity("GA03",$row["s_city"]);
+            $email->addEmailToPrefixAndCity("GA02",$row["s_city"]);
             $email->sent();
         }
     }
