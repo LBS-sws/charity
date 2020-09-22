@@ -93,7 +93,7 @@ class RequestCreditForm extends CFormModel
                 $count = Yii::app()->db->createCommand()->select("count(*)")->from("cy_credit_request")
                     ->where("credit_type=:credit_type and employee_id=:employee_id and state in (1,3,4) and date_format(apply_date,'%Y') ='$year'",
                         array(':credit_type'=>$this->credit_type,':employee_id'=>$this->employee_id))->queryScalar();
-                if($count > $rows["year_max"]){
+                if($count >= $rows["year_max"]){
                     $message = "该学分每年申請次數不能大于".$rows["year_max"];
                     $this->addError($attribute,$message);
                 }
