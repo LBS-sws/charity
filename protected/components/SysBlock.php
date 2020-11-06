@@ -9,7 +9,6 @@ class SysBlock {
 	public function blockNRoute($controllerId, $functionId) {
 		$session = Yii::app()->session;
 		$sysblock =isset($session['sysblock']) ? $session['sysblock'] : array();
-		
 		$sysId = Yii::app()->params['systemId'];
 		
 		foreach ($this->checkItems as $key=>$value) {
@@ -61,16 +60,20 @@ class SysBlock {
 		if($row){ //賬號有綁定的員工且有考核權限
 			$year = date("Y");
 			$day = date("m-d");
-			if($day>="11-01"){
-				$dateSql = " and ((b.year<=".($year-1).") or (b.year = $year and year_type = 1))";
-			}elseif ($day>="05-01"){
-			$dateSql = " and b.year<=".($year-1);
-			}else{
-				$dateSql = " and ((b.year<=".($year-2).") or (b.year = ".($year-1)." and year_type = 1))";
-			}
+            $dateSql = " and b.id<0";
+            if($year>2020){
+                if($year == 2021&&$day>="02-01"&&$day<"08-01"){
+                    $dateSql = " and ((b.year<=".($year-1).") or (b.year = $year and b.year_type = 1))";
+                }elseif ($day>="08-01"){
+                    $dateSql = " and (b.year = $year and b.year_type = 1)";
+                }elseif ($day>="02-01"){
+                    $dateSql = " and (b.year = ".($year-1)." and b.year_type = 2)";
+                }
+            }
 			$count = Yii::app()->db->createCommand()->select("a.id")->from("hr$suffix.hr_review_h a")
 				->leftJoin("hr$suffix.hr_review b","a.review_id=b.id")
-				->where("a.status_type!=3 and a.handle_id=:handle_id $dateSql",
+				->leftJoin("hr$suffix.hr_employee d","b.employee_id=d.id")
+				->where("d.staff_status=0 and a.status_type!=3 and a.handle_id=:handle_id $dateSql",
 					array(":handle_id"=>$row['id'])
 				)->queryRow();
 			if($count){ //存在未考核的員工
