@@ -88,6 +88,7 @@ return array(
 '3 months'=>'3個月內',
 '6 months'=>'6個月內',
 '1 year'=>'1年內',
+'Your ranking is:'=>'你當前的段位為:',
 );
 
 ?>
