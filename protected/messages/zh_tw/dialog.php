@@ -64,5 +64,7 @@ return array(
 'Exceeds file upload limit.'=>'超出文件上傳限制。 ',
 'Mark read for all selected records?'=>'列表上的所有記錄標記為已讀？',
 'Mark Read Done'=>'標記已讀完成',
+'Saving' => '保存中',
+'Invalid file type.'=>'無效的文件類型.',
 );
 ?>
