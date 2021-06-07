@@ -16,7 +16,7 @@ return array(
 	'Operation'=>'营运系统',
 	'Personnel'=>'人事系统',
         'Sales'=>'销售系统',
-    'Quiz'=>'培训测验系统',
+    'Quiz'=>'培训系统',
 	'Academic Credit'=>'学分系统',
     'Integral'=>'学分系统',
     'Charitable Credit'=>'慈善分系统',
