@@ -20,6 +20,7 @@ return array(
 'Academic Credit'=>'學分系統',
 'Integral'=>'學分系統',
 'Charitable Credit'=>'慈善分系統',
+'Service Report'=>'服務報告系統',
 'Online Library'=>'網上文庫',
 'System Use'=>'系統使用',
 
