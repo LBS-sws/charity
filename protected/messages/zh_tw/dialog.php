@@ -66,5 +66,6 @@ return array(
 'Mark Read Done'=>'標記已讀完成',
 'Saving' => '保存中',
 'Invalid file type.'=>'無效的文件類型.',
+'Advice'=>'温馨提示',
 );
 ?>
