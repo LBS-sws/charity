@@ -65,6 +65,39 @@
         ); ?>
     </div>
 </div>
+<?php if ($model->state == 3||$model->type_state == 2): ?>
+<legend>&nbsp;</legend>
+<div class="form-group">
+    <?php echo $form->labelEx($model,'one_audit',array('class'=>"col-sm-2 control-label")); ?>
+    <div class="col-sm-3">
+        <?php echo $form->textField($model, 'one_audit',
+            array('readonly'=>(true))
+        ); ?>
+    </div>
+    <?php echo $form->labelEx($model,'one_date',array('class'=>"col-sm-3 control-label")); ?>
+    <div class="col-sm-3">
+        <?php echo $form->textField($model, 'one_date',
+            array('readonly'=>(true))
+        ); ?>
+    </div>
+</div>
+    <?php if ($model->state == 3): ?>
+        <div class="form-group">
+            <?php echo $form->labelEx($model,'two_audit',array('class'=>"col-sm-2 control-label")); ?>
+            <div class="col-sm-3">
+                <?php echo $form->textField($model, 'two_audit',
+                    array('readonly'=>(true))
+                ); ?>
+            </div>
+            <?php echo $form->labelEx($model,'two_date',array('class'=>"col-sm-3 control-label")); ?>
+            <div class="col-sm-3">
+                <?php echo $form->textField($model, 'two_date',
+                    array('readonly'=>(true))
+                ); ?>
+            </div>
+        </div>
+    <?php endif ?>
+<?php endif ?>
 
 <script>
     $(function () {

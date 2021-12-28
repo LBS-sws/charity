@@ -90,5 +90,9 @@ return array(
     'Available credits = total credits - credits deducted from the award application'=>'可用慈善分 = 总慈善分 - 兑换使用的慈善分',
     'Total credits = all credits for the year'=>'总慈善分 = 截止到本年度的总慈善分',
     'Review timer number'=>'每次考核时间次数',
+    'one date'=>'专员审核时间',
+    'two date'=>'老总审核时间',
+    'one audit'=>'专员审核人',
+    'two audit'=>'老总审核人',
 );
 ?>

@@ -30,11 +30,11 @@ $this->pageTitle=Yii::app()->name . ' - auditCredit Info';
 	<div class="box"><div class="box-body">
 	<div class="btn-group" role="group">
 		<?php echo TbHtml::button('<span class="fa fa-reply"></span> '.Yii::t('misc','Back'), array(
-				'submit'=>Yii::app()->createUrl('auditCredit/index')));
+				'submit'=>Yii::app()->createUrl('auditCredit/index',array('type'=>$this->type))));
 		?>
         <?php if ($model->scenario!='view' && $model->state == 1): ?>
             <?php echo TbHtml::button('<span class="fa fa-save"></span> '.Yii::t('charity','Audit'), array(
-                'submit'=>Yii::app()->createUrl('auditCredit/audit')));
+                'submit'=>Yii::app()->createUrl('auditCredit/audit',array('type'=>$this->type))));
             ?>
         <?php endif ?>
 	</div>
@@ -100,7 +100,7 @@ $this->pageTitle=Yii::app()->name . ' - auditCredit Info';
 ));
 ?>
 <?php
-$this->renderPartial('//site/ject',array('model'=>$model,'form'=>$form,'rejectName'=>"reject_note",'submit'=>Yii::app()->createUrl('auditCredit/reject')));
+$this->renderPartial('//site/ject',array('model'=>$model,'form'=>$form,'rejectName'=>"reject_note",'submit'=>Yii::app()->createUrl('auditCredit/reject',array('type'=>$this->type))));
 ?>
 <?php
 Script::genFileUpload($model,$form->id,'CYRAL');

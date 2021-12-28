@@ -11,7 +11,11 @@ $this->pageTitle=Yii::app()->name . ' - auditCredit Info';
 
 <section class="content-header">
 	<h1>
-		<strong><?php echo Yii::t('app','Audit Charity Credit'); ?></strong>
+        <?php if ($this->type == 1): ?>
+            <strong><?php echo Yii::t('app','Audit Charity Credit Staff'); ?></strong>
+        <?php else: ?>
+            <strong><?php echo Yii::t('app','Audit Charity Credit'); ?></strong>
+        <?php endif ?>
 	</h1>
 <!--
 	<ol class="breadcrumb">

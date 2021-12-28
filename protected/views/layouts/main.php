@@ -15,6 +15,9 @@
 	<meta name="language" content="<?php echo Yii::app()->language; ?>" />
 	
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+    <style type="text/css">
+        .treeview-menu>li.active>a{ color: #0279bd;font-weight: bold;}
+    </style>
 </head>
 
 <body class="hold-transition <?php echo Yii::app()->params['appcolor']; ?> sidebar-mini">

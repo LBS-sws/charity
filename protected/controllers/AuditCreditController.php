@@ -3,6 +3,14 @@
 class AuditCreditController extends Controller
 {
 	public $function_id='GA01';
+	public $type=2;
+
+	public function init(){
+	    $this->type = key_exists("type",$_GET)?$_GET["type"]:2;
+	    $this->type = in_array($this->type,array(1,2))?$this->type:2;
+        $this->function_id = $this->type==2?"GA01":"GA03";
+	    parent::init();
+    }
 
     public function filters()
     {
@@ -37,27 +45,32 @@ class AuditCreditController extends Controller
     }
 
     public static function allowReadWrite() {
-        return Yii::app()->user->validRWFunction('GA01');
+        $type = key_exists("type",$_GET)?$_GET["type"]:2;
+        $type = $type==2?"GA01":"GA03";
+        return Yii::app()->user->validRWFunction($type);
     }
 
     public static function allowReadOnly() {
-        return Yii::app()->user->validFunction('GA01');
+        $type = key_exists("type",$_GET)?$_GET["type"]:2;
+        $type = $type==2?"GA01":"GA03";
+        return Yii::app()->user->validFunction($type);
     }
 
 	public function actionIndex($pageNum=0)
 	{
 		$model = new AuditCreditList;
+		$type = $this->type;
 		if (isset($_POST['AuditCreditList'])) {
 			$model->attributes = $_POST['AuditCreditList'];
 		} else {
 			$session = Yii::app()->session;
-			if (isset($session['auditCredit_ya01']) && !empty($session['auditCredit_ya01'])) {
-				$criteria = $session['auditCredit_ya01'];
+			if (isset($session['auditCredit_ya0'.$type]) && !empty($session['auditCredit_ya0'.$type])) {
+				$criteria = $session['auditCredit_ya0'.$type];
 				$model->setCriteria($criteria);
 			}
 		}
 		$model->determinePageNum($pageNum);
-		$model->retrieveDataByPage($model->pageNum);
+		$model->retrieveDataByPage($model->pageNum,$type);
 		$this->render('index',array('model'=>$model));
 	}
 
@@ -69,11 +82,11 @@ class AuditCreditController extends Controller
 			if ($model->validate()) {
 				$model->saveData();
 				Dialog::message(Yii::t('dialog','Information'), Yii::t('dialog','Save Done'));
-				$this->redirect(Yii::app()->createUrl('auditCredit/index',array('index'=>$model->id)));
+				$this->redirect(Yii::app()->createUrl('auditCredit/index',array('index'=>$model->id,'type'=>$this->type)));
 			} else {
 				$message = CHtml::errorSummary($model);
 				Dialog::message(Yii::t('dialog','Validation Message'), $message);
-                $this->redirect(Yii::app()->createUrl('auditCredit/edit',array('index'=>$model->id)));
+                $this->redirect(Yii::app()->createUrl('auditCredit/edit',array('index'=>$model->id,'type'=>$this->type)));
 			}
 		}
 	}
@@ -86,11 +99,11 @@ class AuditCreditController extends Controller
 			if ($model->validate()) {
 				$model->saveData();
 				Dialog::message(Yii::t('dialog','Information'), Yii::t('dialog','Save Done'));
-				$this->redirect(Yii::app()->createUrl('auditCredit/index'));
+				$this->redirect(Yii::app()->createUrl('auditCredit/index',array('type'=>$this->type)));
 			} else {
 				$message = CHtml::errorSummary($model);
 				Dialog::message(Yii::t('dialog','Validation Message'), $message);
-                $this->redirect(Yii::app()->createUrl('auditCredit/edit',array('index'=>$model->id)));
+                $this->redirect(Yii::app()->createUrl('auditCredit/edit',array('index'=>$model->id,'type'=>$this->type)));
 			}
 		}
 	}
@@ -98,7 +111,7 @@ class AuditCreditController extends Controller
 	public function actionView($index)
 	{
 		$model = new AuditCreditForm('view');
-		if (!$model->retrieveData($index)) {
+		if (!$model->retrieveData($index,$this->type)) {
 			throw new CHttpException(404,'The requested page does not exist.');
 		} else {
 			$this->render('form',array('model'=>$model,));
@@ -108,7 +121,7 @@ class AuditCreditController extends Controller
 	public function actionEdit($index)
 	{
 		$model = new AuditCreditForm('edit');
-		if (!$model->retrieveData($index)) {
+		if (!$model->retrieveData($index,$this->type)) {
 			throw new CHttpException(404,'The requested page does not exist.');
 		} else {
 			$this->render('form',array('model'=>$model,));

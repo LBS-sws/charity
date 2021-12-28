@@ -19,9 +19,13 @@ return array(
         'access'=>'GA',
 		'icon'=>'fa-legal',
         'items'=>array(
+            'Audit Charity Credit Staff'=>array(
+                'access'=>'GA03',
+                'url'=>'/auditCredit/index?type=1',
+            ),
             'Audit Charity Credit'=>array(
                 'access'=>'GA01',
-                'url'=>'/auditCredit/index',
+                'url'=>'/auditCredit/index?type=2',
             ),
             'Audit Charity Prize'=>array(
                 'access'=>'GA02',

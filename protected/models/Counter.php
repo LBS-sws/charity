@@ -22,13 +22,23 @@ class Counter {
         return $imDo_num;
     }
 
-	//申请慈善分审核
-	public static function getAuditCredit() {
+	//申请慈善分审核(專員)
+	public static function getAuditCreditOne() {
         $suffix = Yii::app()->params['envSuffix'];
         $city_allow = Yii::app()->user->city_allow();
         $imDo_num = Yii::app()->db->createCommand()->select("count(a.id)")->from("cy_credit_request a")
             ->leftJoin("hr$suffix.hr_employee d","a.employee_id = d.id")
-            ->where("d.city IN ($city_allow) AND a.state = 1")->queryScalar();
+            ->where("d.city IN ($city_allow) AND a.state = 1 and a.type_state=1")->queryScalar();
+        return $imDo_num;
+	}
+
+	//申请慈善分审核(老總)
+	public static function getAuditCreditTwo() {
+        $suffix = Yii::app()->params['envSuffix'];
+        $city_allow = Yii::app()->user->city_allow();
+        $imDo_num = Yii::app()->db->createCommand()->select("count(a.id)")->from("cy_credit_request a")
+            ->leftJoin("hr$suffix.hr_employee d","a.employee_id = d.id")
+            ->where("d.city IN ($city_allow) AND a.state = 1 and a.type_state=2")->queryScalar();
         return $imDo_num;
 	}
 

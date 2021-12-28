@@ -19,7 +19,7 @@ class AuditCreditList extends CListPageModel
         );
 	}
 	
-	public function retrieveDataByPage($pageNum=1)
+	public function retrieveDataByPage($pageNum=1,$type=2)
 	{
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city();
@@ -27,12 +27,12 @@ class AuditCreditList extends CListPageModel
         $sql1 = "select a.*,b.charity_name,d.name AS employee_name,d.city AS s_city from cy_credit_request a
                 LEFT JOIN cy_credit_type b ON a.credit_type = b.id
                 LEFT JOIN hr$suffix.hr_employee d ON a.employee_id = d.id
-                where (d.city IN ($city_allow) AND a.state = 1) 
+                where (d.city IN ($city_allow) AND a.state = 1) and type_state='$type' 
 			";
         $sql2 = "select count(a.id) from cy_credit_request a
                 LEFT JOIN cy_credit_type b ON a.credit_type = b.id
                 LEFT JOIN hr$suffix.hr_employee d ON a.employee_id = d.id
-                where (d.city IN ($city_allow) AND a.state = 1) 
+                where (d.city IN ($city_allow) AND a.state = 1) and type_state='$type' 
 			";
         $clause = "";
         if (!empty($this->searchField) && !empty($this->searchValue)) {
@@ -76,6 +76,7 @@ class AuditCreditList extends CListPageModel
                     'employee_name'=>$record['employee_name'],
                     'charity_name'=>$record['charity_name'],
                     'credit_point'=>$record['credit_point'],
+                    'type'=>$type,
                     'apply_date'=>date("Y-m-d",strtotime($record['apply_date'])),
                     'status'=>$colorList["status"],
                     'city'=>CGeneral::getCityName($record["s_city"]),
@@ -84,7 +85,7 @@ class AuditCreditList extends CListPageModel
 			}
 		}
 		$session = Yii::app()->session;
-		$session['auditCredit_ya01'] = $this->getCriteria();
+		$session['auditCredit_ya0'.$type] = $this->getCriteria();
 		return true;
 	}
 

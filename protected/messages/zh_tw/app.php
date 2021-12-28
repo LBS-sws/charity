@@ -87,7 +87,7 @@ return array(
     'Apply Charity Credit'=>'申請慈善分',
     'Apply Charity Prize'=>'兌換慈善分',
 
-    'Audit Charity Credit'=>'審核慈善分',
+    'Audit Charity Credit'=>'慈善分地區老總審核',
     'Audit Charity Prize'=>'審核慈善分兌換',
 
     'Charity Credit Search'=>'慈善分查詢',
@@ -103,6 +103,7 @@ return array(
     'Cancel the Charity'=>'取消已審核的慈善分',
     'Cancel the Prize'=>'取消已審核的兌換',
     'Search All City'=>'查詢所有城市',
+    'Audit Charity Credit Staff'=>'慈善分專員審核',
 //沈超添加結束
 );
 ?>

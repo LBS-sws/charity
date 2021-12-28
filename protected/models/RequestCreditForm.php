@@ -20,6 +20,11 @@ class RequestCreditForm extends CFormModel
 	public $remark;
 	public $reject_note;
 	public $state = 0;//狀態 0：草稿 1：發送  2：拒絕  3：完成  4:確定
+    public $type_state=2; //1:專員審核 2：總部審核
+    public $one_date; //
+    public $two_date; //
+    public $one_audit; //
+    public $two_audit; //
 	public $city;
     public $rule;
     public $review_str;
@@ -63,6 +68,10 @@ class RequestCreditForm extends CFormModel
             'city'=>Yii::t('charity','City'),
             'apply_date'=>Yii::t('charity','apply for time'),
             'review_str'=>Yii::t('charity','Review timer number'),
+            'one_date'=>Yii::t('charity','one date'),
+            'two_date'=>Yii::t('charity','two date'),
+            'one_audit'=>Yii::t('charity','one audit'),
+            'two_audit'=>Yii::t('charity','two audit'),
 		);
 	}
 
@@ -213,6 +222,10 @@ class RequestCreditForm extends CFormModel
                 $this->reject_note = $row['reject_note'];
                 $this->state = $row['state'];
                 $this->review_str = $row['review_str'];
+                $this->one_date = $row['one_date'];
+                $this->two_date = $row['two_date'];
+                $this->one_audit = $row['one_audit'];
+                $this->two_audit = $row['two_audit'];
                 $this->lcu = $row['lcu'];
                 $this->rule = $row['rule'];
                 $this->luu = $row['luu'];
@@ -267,9 +280,9 @@ class RequestCreditForm extends CFormModel
 				break;
 			case 'new':
 				$sql = "insert into cy_credit_request(
-							employee_id, apply_date, credit_type, credit_point, remark, state, city, lcu
+							employee_id, apply_date, credit_type, credit_point, remark, type_state, state, city, lcu
 						) values (
-							:employee_id, :apply_date, :credit_type, :credit_point, :remark, :state, :city, :lcu
+							:employee_id, :apply_date, :credit_type, :credit_point, :remark, 1, :state, :city, :lcu
 						)";
 				break;
 			case 'edit':
@@ -281,6 +294,7 @@ class RequestCreditForm extends CFormModel
 							remark = :remark,
 							reject_note = '',
 							state = :state,
+							type_state = 1,
 							luu = :luu
 						where id = :id and lcu=:lcu
 						";
@@ -338,7 +352,7 @@ class RequestCreditForm extends CFormModel
             $email->setDescription($description);
             $email->setMessage($message);
             $email->setSubject($subject);
-            $email->addEmailToPrefixAndCity("GA01",$row["s_city"]);
+            $email->addEmailToPrefixAndCity("GA03",$row["s_city"]);
             $email->sent();
         }
     }

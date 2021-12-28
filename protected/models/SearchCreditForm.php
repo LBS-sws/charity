@@ -18,6 +18,11 @@ class SearchCreditForm extends CFormModel
     public $remark;
     public $reject_note;
     public $state = 0;
+    public $type_state=2; //1:專員審核 2：總部審核
+    public $one_date; //
+    public $two_date; //
+    public $one_audit; //
+    public $two_audit; //
     public $city;
     public $lcu;
     public $luu;
@@ -63,6 +68,10 @@ class SearchCreditForm extends CFormModel
             'city'=>Yii::t('charity','City'),
             'apply_date'=>Yii::t('charity','apply for time'),
             'review_str'=>Yii::t('charity','Review timer number'),
+            'one_date'=>Yii::t('charity','one date'),
+            'two_date'=>Yii::t('charity','two date'),
+            'one_audit'=>Yii::t('charity','one audit'),
+            'two_audit'=>Yii::t('charity','two audit'),
         );
     }
 
@@ -108,7 +117,7 @@ class SearchCreditForm extends CFormModel
             ->from("cy_credit_request a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
             ->leftJoin("cy_credit_type d","a.credit_type = d.id")
-            ->where("a.id=:id and $citySql and a.state = 3", array(':id'=>$index))->queryAll();
+            ->where("a.id=:id and $citySql and a.state = 3 and a.type_state = 2", array(':id'=>$index))->queryAll();
         if (count($rows) > 0)
         {
             foreach ($rows as $row)
@@ -123,10 +132,15 @@ class SearchCreditForm extends CFormModel
                 $this->remark = $row['remark'];
                 $this->reject_note = $row['reject_note'];
                 $this->state = $row['state'];
+                $this->type_state = $row['type_state'];
                 $this->review_str = $row['review_str'];
                 $this->lcu = $row['lcu'];
                 $this->department = $row['department'];
                 $this->position = $row['position'];
+                $this->one_date = $row['one_date'];
+                $this->two_date = $row['two_date'];
+                $this->one_audit = $row['one_audit'];
+                $this->two_audit = $row['two_audit'];
                 $this->luu = $row['luu'];
                 $this->lcd = $row['lcd'];
                 $this->lud = $row['lud'];

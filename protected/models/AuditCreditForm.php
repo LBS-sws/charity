@@ -17,6 +17,11 @@ class AuditCreditForm extends CFormModel
     public $remark;
     public $reject_note;
     public $state = 0;//狀態 0：草稿 1：發送  2：拒絕  3：完成  4:確定
+    public $type_state=2; //1:專員審核 2：總部審核
+    public $one_date; //
+    public $two_date; //
+    public $one_audit; //
+    public $two_audit; //
     public $city;
     public $lcu;
     public $luu;
@@ -60,6 +65,10 @@ class AuditCreditForm extends CFormModel
             'city'=>Yii::t('charity','City'),
             'apply_date'=>Yii::t('charity','apply for time'),
             'review_str'=>Yii::t('charity','Review timer number'),
+            'one_date'=>Yii::t('charity','one date'),
+            'two_date'=>Yii::t('charity','two date'),
+            'one_audit'=>Yii::t('charity','one audit'),
+            'two_audit'=>Yii::t('charity','two audit'),
         );
     }
 
@@ -78,9 +87,12 @@ class AuditCreditForm extends CFormModel
     }
 
     public function validateId($attribute, $params){
+        $type = key_exists("type",$_GET)?$_GET["type"]:2;
+        $type = in_array($type,array(1,2))?$type:2;
         $rows = Yii::app()->db->createCommand()->select("*")->from("cy_credit_request")
-            ->where("id=:id and state = 1", array(':id'=>$this->id))->queryRow();
+            ->where("id=:id and state = 1 and type_state=$type", array(':id'=>$this->id))->queryRow();
         if ($rows){
+            $this->type_state = $rows["type_state"];
             $this->employee_id = $rows["employee_id"];
             $this->apply_date = $rows["apply_date"];
             $this->credit_point = $rows["credit_point"];
@@ -91,20 +103,21 @@ class AuditCreditForm extends CFormModel
     }
 
 
-    public function retrieveData($index) {
+    public function retrieveData($index,$type=2) {
         $city_allow = Yii::app()->user->city_allow();
         $suffix = Yii::app()->params['envSuffix'];
         $rows = Yii::app()->db->createCommand()->select("a.*,d.remark as s_remark,d.validity,b.department,b.position,b.name as employee_name,b.city as s_city,d.review_str,d.rule,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
             ->from("cy_credit_request a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
             ->leftJoin("cy_credit_type d","a.credit_type = d.id")
-            ->where("a.id=:id and a.state = 1 and b.city in ($city_allow) ", array(':id'=>$index))->queryAll();
+            ->where("a.id=:id and a.state = 1 and b.city in ($city_allow) and a.type_state=$type", array(':id'=>$index))->queryAll();
         if (count($rows) > 0) {
             foreach ($rows as $row) {
                 $this->id = $row['id'];
                 $this->employee_id = $row['employee_id'];
                 $this->employee_name = $row['employee_name'];
                 $this->department = $row['department'];
+                $this->type_state = $row['type_state'];
                 $this->position = $row['position'];
                 $this->credit_type = $row['credit_type'];
                 $this->credit_point = $row['credit_point'];
@@ -115,6 +128,10 @@ class AuditCreditForm extends CFormModel
                 $this->reject_note = $row['reject_note'];
                 $this->state = $row['state'];
                 $this->review_str = $row['review_str'];
+                $this->one_date = $row['one_date'];
+                $this->two_date = $row['two_date'];
+                $this->one_audit = $row['one_audit'];
+                $this->two_audit = $row['two_audit'];
                 $this->rule = $row['rule'];
                 $this->lcu = $row['lcu'];
                 $this->luu = $row['luu'];
@@ -146,9 +163,8 @@ class AuditCreditForm extends CFormModel
 
     /*  id;employee_id;employee_code;employee_name;reward_id;reward_name;reward_money;reward_goods;remark;city;*/
 	protected function saveGoods(&$connection) {
-
         //添加學分及積分
-        if($this->scenario == "audit"){
+        if($this->scenario == "audit"&&$this->type_state==2){
             $this->auditCredit();
         }
 
@@ -186,22 +202,52 @@ class AuditCreditForm extends CFormModel
         $command->execute();
 
         $this->sendEmail();
+        $this->updateType();
 		return true;
 	}
 
+    //專員轉化成老總考核
+	protected function updateType(){
+        $date = date("Y-m-d H:i:s");
+        $display_name = Yii::app()->user->user_display_name();
+        switch ($this->type_state){
+            case 1://專員
+                Yii::app()->db->createCommand()->update('cy_credit_request', array(
+                    'one_audit'=>$display_name,
+                    'one_date'=>$date,
+                    'state'=>1,
+                    'type_state'=>2,
+                ), 'id=:id', array(':id'=>$this->id));
+                break;
+            case 2://老總
+                Yii::app()->db->createCommand()->update('cy_credit_request', array(
+                    'two_audit'=>$display_name,
+                    'two_date'=>$date,
+                ), 'id=:id', array(':id'=>$this->id));
+                break;
+        }
+    }
+
     //發送郵件
     protected function sendEmail(){
-        if($this->scenario == "audit"){
-            $str = "慈善分审核通过";
-        }else{
-            $str = "慈善分被拒绝";
-        }
         $email = new Email();
         $suffix = Yii::app()->params['envSuffix'];
         $row = Yii::app()->db->createCommand()->select("a.*,b.name as employee_name,b.code as employee_code,b.city as s_city")
             ->from("cy_credit_request a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
             ->where("a.id=:id", array(':id'=>$this->id))->queryRow();
+        if($this->scenario == "audit"){
+            if($this->type_state==1){
+                $str = "慈善分申请";
+                $email->addEmailToPrefixAndCity("GA01",$row["s_city"]);
+            }else{
+                $str = "慈善分审核通过";
+                $email->addEmailToStaffId($row["employee_id"]);
+            }
+        }else{
+            $str = "慈善分被拒绝";
+            $email->addEmailToStaffId($row["employee_id"]);
+        }
         $description="$str - ".$row["employee_name"];
         $subject="$str - ".$row["employee_name"];
         $message="<p>员工编号：".$row["employee_code"]."</p>";
@@ -215,7 +261,6 @@ class AuditCreditForm extends CFormModel
         $email->setDescription($description);
         $email->setMessage($message);
         $email->setSubject($subject);
-        $email->addEmailToStaffId($row["employee_id"]);
         $email->sent();
     }
 
