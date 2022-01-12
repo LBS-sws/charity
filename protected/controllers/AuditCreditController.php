@@ -35,8 +35,12 @@ class AuditCreditController extends Controller
                 'expression'=>array('AuditCreditController','allowReadWrite'),
             ),
             array('allow',
-                'actions'=>array('index','view','FileDownload'),
+                'actions'=>array('index','view'),
                 'expression'=>array('AuditCreditController','allowReadOnly'),
+            ),
+            array('allow',
+                'actions'=>array('FileDownload'),
+                'expression'=>array('AuditCreditController','allowDownload'),
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
@@ -54,6 +58,10 @@ class AuditCreditController extends Controller
         $type = key_exists("type",$_GET)?$_GET["type"]:2;
         $type = $type==2?"GA01":"GA03";
         return Yii::app()->user->validFunction($type);
+    }
+
+    public static function allowDownload() {
+        return Yii::app()->user->validFunction("GA01")||Yii::app()->user->validFunction("GA03");
     }
 
 	public function actionIndex($pageNum=0)
