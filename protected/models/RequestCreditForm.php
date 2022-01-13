@@ -200,6 +200,8 @@ class RequestCreditForm extends CFormModel
         $suffix = Yii::app()->params['envSuffix'];
         //$city_allow = Yii::app()->user->city_allow();
         $city_allow = Yii::app()->user->getEmployeeCityAll();
+        $uid = Yii::app()->user->id;
+        $staffId = Yii::app()->user->staff_id();//
         $rows = Yii::app()->db->createCommand()->select("a.*,d.review_str,b.department,b.position,b.name as employee_name,d.rule,d.remark as s_remark,docman$suffix.countdoc('CYRAL',a.id) as cyraldoc")
             ->from("cy_credit_request a")
             ->leftJoin("hr$suffix.hr_employee b","a.employee_id = b.id")
@@ -235,6 +237,9 @@ class RequestCreditForm extends CFormModel
                 $this->apply_date = CGeneral::toDate($row['apply_date']);
                 //$this->s_remark = $row['s_remark'];
                 $this->no_of_attm['cyral'] = $row['cyraldoc'];
+                if($row["lcu"]!=$uid&&$row["employee_id"]!=$staffId){
+                    $this->setScenario("view");
+                }
 				break;
 			}
 		}

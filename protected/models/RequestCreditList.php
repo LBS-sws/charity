@@ -37,10 +37,14 @@ class RequestCreditList extends CListPageModel
     public function retrieveDataByPage($pageNum=1)
     {
         $suffix = Yii::app()->params['envSuffix'];
-        $city = Yii::app()->user->city();
+        $city_allow = Yii::app()->user->city_allow();
         $uid = Yii::app()->user->id;
         $staffId = Yii::app()->user->staff_id();//
-        $whereSql = "a.id>0 and (a.lcu='$uid' or a.employee_id='$staffId')";
+        if(Yii::app()->user->validRWFunction("GA01")||Yii::app()->user->validRWFunction("GA03")){
+            $whereSql = "a.id>0 and d.city in ($city_allow)";
+        }else{
+            $whereSql = "a.id>0 and (a.lcu='$uid' or a.employee_id='$staffId')";
+        }
         $sql1 = "select a.*,b.charity_name,d.name AS employee_name,d.city AS s_city from cy_credit_request a
                 LEFT JOIN cy_credit_type b ON a.credit_type = b.id
                 LEFT JOIN hr$suffix.hr_employee d ON a.employee_id = d.id
