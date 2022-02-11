@@ -41,6 +41,7 @@ $this->pageTitle=Yii::app()->name . ' - Credit type allocation';
         'charity_name',
         'credit_point',
         'employee_name',
+        'city_name',
     );
     $search_add_html="";
     $modelName = get_class($model);
