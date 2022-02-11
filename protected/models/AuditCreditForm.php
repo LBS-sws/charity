@@ -215,7 +215,7 @@ class AuditCreditForm extends CFormModel
                 Yii::app()->db->createCommand()->update('cy_credit_request', array(
                     'one_audit'=>$display_name,
                     'one_date'=>$date,
-                    'state'=>1,
+                    'state'=>$this->getScenario()=="reject"?2:1,
                     'type_state'=>2,
                 ), 'id=:id', array(':id'=>$this->id));
                 break;
