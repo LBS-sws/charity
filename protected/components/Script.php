@@ -271,6 +271,10 @@ function $dlfuncid(mid, did, fid) {
         $btnid = $doc->uploadButtonName;
         $typeid = strtolower($doctype);
         $modelname = get_class($model);
+        $hrefType = "";
+        if(key_exists("type",$_GET)){
+            $hrefType="&type=".$_GET["type"];
+        }
 
         $str = "
 function $rmfuncid(id) {
@@ -309,7 +313,7 @@ function $rmfuncid(id) {
 }
 
 function $dlfuncid(mid, did, fid) {
-	href = '$dwlink?mastId='+mid+'&docId='+did+'&fileId='+fid+'&doctype=$doctype';
+	href = '$dwlink?mastId='+mid+'&docId='+did+'&fileId='+fid+'&doctype={$doctype}{$hrefType}';
 	window.open(href);
 }
 		";
