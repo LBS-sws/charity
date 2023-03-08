@@ -1,6 +1,6 @@
 <?php
 return array(
-    'drs.H01' => array(//日报表系统-月报表总结提交
+    'drs.H01' => array(//日报表系统-月报表总结提交 
         'validation'=>'isMonthDispatch',
         'system'=>'drs',
         'function'=>'H01',
