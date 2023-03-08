@@ -430,8 +430,7 @@ class SysBlock {
                 ->order("a.qc_date desc")
                 ->queryScalar();
             if($result){
-                $nowMonth = date("Y/m/01");
-                $nowMonth = date("Y-m",strtotime("$nowMonth -1 month"));
+                $nowMonth = $result["qc_date"];
                 $title = Yii::app()->db->createCommand()->select("MAX(title_num/title_sum)")->from("quiz$suffix.exa_join")
                     ->where("employee_id=:employee_id and date_format(lcd,'%Y-%m')>=:date",array(":employee_id"=>$row['id'],":date"=>$nowMonth))->queryScalar();
                 $title = $title===null?0:floatval($title);
