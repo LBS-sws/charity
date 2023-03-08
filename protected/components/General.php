@@ -4,6 +4,7 @@
 class General extends CGeneral {
 
 /* SAMPLE CODE	
+
 // ===========
 	public static function getAcctTypeList()
 	{
