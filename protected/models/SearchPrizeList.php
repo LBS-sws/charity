@@ -66,7 +66,7 @@ class SearchPrizeList extends CListPageModel
                     $clause .= General::getSqlConditionClause('total_point',$svalue);
                     break;
                 case 'city_name':
-                    $clause .= ' and d.city in '.CreditRequestList::getCityCodeSqlLikeName($svalue);
+                    $clause .= ' and d.city in '.RequestCreditList::getCityCodeSqlLikeName($svalue);
                     break;
             }
         }
