@@ -153,7 +153,7 @@ class RequestCreditList extends CListPageModel
     }
 
 //获取地区編號（模糊查詢）
-    public function getCityCodeSqlLikeName($code)
+    public static function getCityCodeSqlLikeName($code)
     {
         $from =  'security'.Yii::app()->params['envSuffix'].'.sec_city';
         $rows = Yii::app()->db->createCommand()->select("code")->from($from)->where(array('like', 'name', "%$code%"))->queryAll();
