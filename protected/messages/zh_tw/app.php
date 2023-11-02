@@ -23,6 +23,8 @@ return array(
 'Service Report'=>'服務報告系統',
 'Online Library'=>'網上文庫',
 'System Use'=>'系統使用',
+    'Investment'=>'投資管理系統',
+    'Project progress'=>'項目跟進系統',
 
 
 'Data Entry'=>'數據輸入',

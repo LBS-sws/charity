@@ -23,7 +23,8 @@ return array(
 	'Service Report'=>'服务报告系统',
 	'Online Library'=>'网上文库',
 	'System Use'=>'系统使用',
-	'Investment'=>'投资管理系统',
+    'Investment'=>'投资管理系统',
+    'Project progress'=>'项目跟进系统',
 
 
 	'Data Entry'=>'数据输入',
