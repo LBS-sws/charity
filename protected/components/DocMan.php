@@ -22,62 +22,62 @@ class DocMan {
     public $widgetName = 'fileupload';
 
     public $imageMaxSize = 512000;
-    public $docMaxSize = 8388608;
+    public $docMaxSize = 10485760;
 
     protected $baseDir;
 
-/*
-    const _allowedFiles = array(
-        'bmp'  => 'image/bmp',
-        'gif'  => 'image/gif',
-        'jpeg' => 'image/jpeg',
-        'jpg'  => 'image/jpeg',
-        'png'  => 'image/png',
-        'tif'  => 'image/tiff',
-        'tiff' => 'image/tiff',
+    /*
+        const _allowedFiles = array(
+            'bmp'  => 'image/bmp',
+            'gif'  => 'image/gif',
+            'jpeg' => 'image/jpeg',
+            'jpg'  => 'image/jpeg',
+            'png'  => 'image/png',
+            'tif'  => 'image/tiff',
+            'tiff' => 'image/tiff',
 
-        'pdf' => 'application/pdf',		//'application/x-pdf',
-        'txt' => 'text/plain',
-        'rtf' => 'application/rtf',		//'text/rtf',
+            'pdf' => 'application/pdf',		//'application/x-pdf',
+            'txt' => 'text/plain',
+            'rtf' => 'application/rtf',		//'text/rtf',
 
-        'odt' => 'application/vnd.oasis.opendocument.text',
-        'ott' => 'application/vnd.oasis.opendocument.text-template',
-        'odp' => 'application/vnd.oasis.opendocument.presentation',
-        'otp' => 'application/vnd.oasis.opendocument.presentation-template',
-        'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-        'ots' => 'application/vnd.oasis.opendocument.spreadsheet-template',
-        'odc' => 'application/vnd.oasis.opendocument.chart',
-        'odf' => 'application/vnd.oasis.opendocument.formula',
+            'odt' => 'application/vnd.oasis.opendocument.text',
+            'ott' => 'application/vnd.oasis.opendocument.text-template',
+            'odp' => 'application/vnd.oasis.opendocument.presentation',
+            'otp' => 'application/vnd.oasis.opendocument.presentation-template',
+            'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+            'ots' => 'application/vnd.oasis.opendocument.spreadsheet-template',
+            'odc' => 'application/vnd.oasis.opendocument.chart',
+            'odf' => 'application/vnd.oasis.opendocument.formula',
 
-        'doc'  => 'application/x-msword',	//'application/msword',
-        'xls'  => 'application/vnd.ms-excel',	//'application/excel',
-        'xlsm' => 'application/vnd.ms-excel.sheet.macroenabled.12',
-        'ppt'  => 'application/vnd.ms-powerpoint',
+            'doc'  => 'application/x-msword',	//'application/msword',
+            'xls'  => 'application/vnd.ms-excel',	//'application/excel',
+            'xlsm' => 'application/vnd.ms-excel.sheet.macroenabled.12',
+            'ppt'  => 'application/vnd.ms-powerpoint',
 
-        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'dotx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
-        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'dotx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 
-        'avi' => 'video/x-msvideo',
-        'flv' => 'video/x-flv',
-        'mov' => 'video/quicktime',
-        'mp4' => 'video/vnd.objectvideo',
-        'mpg' => 'video/mpeg',
-        'wmv' => 'video/x-ms-wmv',
+            'avi' => 'video/x-msvideo',
+            'flv' => 'video/x-flv',
+            'mov' => 'video/quicktime',
+            'mp4' => 'video/vnd.objectvideo',
+            'mpg' => 'video/mpeg',
+            'wmv' => 'video/x-ms-wmv',
 
-        '7z'  => 'application/x-7z-compressed', 	//'application/7z',
-        'rar' => 'application/x-rar-compressed', 	//'application/rar',
-        'zip' => 'application/x-zip-compressed', 	//'application/zip',
-        'gz'  => 'application/x-gzip',				//'application/gzip',
-        'tar' => 'application/x-tar', 				//'application/tar',
-        'tgz' => 'application/gzip', 				//'application/tar', 'application/tar+gzip',
+            '7z'  => 'application/x-7z-compressed', 	//'application/7z',
+            'rar' => 'application/x-rar-compressed', 	//'application/rar',
+            'zip' => 'application/x-zip-compressed', 	//'application/zip',
+            'gz'  => 'application/x-gzip',				//'application/gzip',
+            'tar' => 'application/x-tar', 				//'application/tar',
+            'tgz' => 'application/gzip', 				//'application/tar', 'application/tar+gzip',
 
-        'mp3' => 'audio/mpeg',
-        'ogg' => 'application/ogg',
-        'wma' => 'audio/x-ms-wma',
-    );
-*/
+            'mp3' => 'audio/mpeg',
+            'ogg' => 'application/ogg',
+            'wma' => 'audio/x-ms-wma',
+        );
+    */
 
     const _allowedFiles = '{[
         "bmp":"image/bmp",
@@ -128,7 +128,7 @@ class DocMan {
         $this->docId = $id;
         $this->formId = $form;
         $this->baseDir = Yii::app()->params['docmanPath'];
-		if (!empty(Yii::app()->params['docmanSize'])) $this->docMaxSize = Yii::app()->params['docmanSize'];
+        if (!empty(Yii::app()->params['docmanSize'])) $this->docMaxSize = Yii::app()->params['docmanSize'];
 
         $this->inputName .= strtolower($type);
         $this->tableName .= strtolower($type);
@@ -221,7 +221,7 @@ class DocMan {
                 $this->saveFile($connection, 'insert', $data);
             }
             $transaction->commit();
-
+            $this->resetModelFileNumber();
         } catch(Exception $e) {
             $transaction->rollback();
             throw new CHttpException(404,'Cannot update.'.$e->getMessage());
@@ -238,7 +238,7 @@ class DocMan {
             $filename = $data['display_name'];
             $filetype = $data['file_type'];
             if (file_exists($path.'/'.$name)) {
-				$allow = json_decode(self::_allowedFiles, true);
+                $allow = json_decode(self::_allowedFiles, true);
                 $ext = pathinfo($path.'/'.$name,PATHINFO_EXTENSION);
                 $type = (!empty($filetype)) ? $filetype : (isset($allow[$ext]) ? $allow[$ext] : '');
 
@@ -270,6 +270,7 @@ class DocMan {
                 );
                 $this->saveFile($connection, 'delete', $data);
                 $transaction->commit();
+                $this->resetModelFileNumber();
             } catch(Exception $e) {
                 $transaction->rollback();
                 throw new CHttpException(404,'Cannot update.');
@@ -388,7 +389,7 @@ class DocMan {
         $sql = ($mastId > 0)
             ? "select
 						a.id, a.doc_type_code, a.doc_id, 
-						b.id as file_id, b.display_name, b.archive, b.lcd, b.file_type  
+						b.id as file_id, b.display_name, b.archive, b.lcd, b.file_type, b.phy_file_name, b.phy_path_name  
 					from 
 						docman$suffix.dm_master a inner join docman$suffix.dm_file b on a.id=b.mast_id 
 					where 
@@ -397,7 +398,7 @@ class DocMan {
 				"
             : "select
 						a.id, a.doc_type_code, a.doc_id, 
-						b.id as file_id, b.display_name, b.archive, b.lcd, b.file_type  
+						b.id as file_id, b.display_name, b.archive, b.lcd, b.file_type, b.phy_file_name, b.phy_path_name 
 					from 
 						docman$suffix.dm_master a inner join docman$suffix.dm_file b on a.id=b.mast_id 
 					where 
@@ -438,12 +439,28 @@ class DocMan {
                     'file_id'=>$row['file_id'],
                     'file_type'=>$row['file_type'],
                     'display_name'=>$row['display_name'],
+                    'phy_file_name'=>$row['phy_file_name'],
+                    'phy_path_name'=>$row['phy_path_name'],
                     'archive'=>$row['archive'],
                     'lcd'=>$row['lcd'],
                 );
             }
         }
         return $rtn;
+    }
+
+    private function getImgHtml($row){
+        $html = "";
+        if (strpos($row["file_type"],'image/')!==false){
+            $path = $row["phy_path_name"]."/".$row["phy_file_name"];
+            if(is_file($path)){
+                $imgData=file_get_contents($path);
+                $imgData = base64_encode($imgData);
+                $imgData="data:{$row["file_type"]};base64,{$imgData}";
+                $html = "<span class='fa fa-search-plus'><img src=\"{$imgData}\" class='hide'></span>";
+            }
+        }
+        return $html;
     }
 
     public function genTableFileList($readonly, $nodelete=false) {
@@ -463,11 +480,13 @@ class DocMan {
                 $id = $filerec['file_id'];
                 $x = $this->masterId;
                 $y = $this->formId;
+                $imgHtml = $this->getImgHtml($filerec);//图片资源
+                $clickImg = empty($imgHtml)?"":" search_box_img";
                 $vbutton = ($this->docId==0) ? "" : "<a href=\"#\" onclick=\"downloadFile$doctype($mid, $did, $id);return false;\" title=\"$title1\"><span class=\"fa fa-download\"></span></a>";
                 $dbutton = ($readonly || $nodelete) ? "" : "<a href=\"#\" onclick=\"removeFile$doctype($id);return false;\"><span class=\"fa fa-remove\" title=\"$title2\"></span></a>";
                 $fname = $filerec['display_name'];
                 $ldate = $filerec['lcd'];
-                $rtn .= "<tr><td>$vbutton&nbsp;&nbsp;$dbutton</td><td>$fname</td><td>$ldate</td></tr>";
+                $rtn .= "<tr><td>$vbutton&nbsp;&nbsp;$dbutton</td><td class='{$clickImg}'>$fname {$imgHtml}</td><td>$ldate</td></tr>";
                 $reccnt++;
             }
         }
@@ -493,10 +512,12 @@ class DocMan {
                 $mid = $filerec['id'];
                 $did = $this->docId;
                 $id = $filerec['file_id'];
+                $imgHtml = $this->getImgHtml($filerec);//图片资源
+                $clickImg = empty($imgHtml)?"":" search_box_img";
                 $vbutton = "<a href=\"#\" onclick=\"downloadFile$doctype($mid, $did, $id);return false;\" title=\"$title1\"><span class=\"fa fa-download\"></span></a>";
                 $fname = $filerec['display_name'];
                 $ldate = $filerec['lcd'];
-                $rtn .= "<tr><td>$vbutton</td><td>$fname</td><td>$ldate</td></tr>";
+                $rtn .= "<tr><td>$vbutton</td><td class='{$clickImg}'>$fname {$imgHtml}</td><td>$ldate</td></tr>";
                 $reccnt++;
             }
         }
@@ -508,75 +529,76 @@ class DocMan {
         $suffix = Yii::app()->params['envSuffix'];
         $docId = $this->docId;
         $sql = "update docman$suffix.dm_master set doc_id=$docId where id=$masterId";
-        var_dump($sql);
+        //var_dump($sql);
         $connection->createCommand($sql)->execute();
+        $this->resetModelFileNumber();
     }
 
-/*
-	用日文件類別及日期範圍 , 讀取上載檔案資料
-	
-	參數:	doctype: 文件記錄類別 (array)
-			fromdate: 上載日期開始 (date)
-			todate: 上載日期結束 (date)
-	
-	返回資料包括: (array)
-		id: 上載檔案內部編號
-		docmentType: 文件記錄類別 (如: SERVICE, TAX, VISIT, EMPLOYEE, ...)
-		documentId: 文件記錄編號
-		fileType: 檔案類別
-		fileName: 檔案顯示名稱
-		token: 用以下載檔案配對時使用
-*/
-	public function getFileListByDate($doctype = array(), $fromdate='', $todate='') {
+    /*
+        用日文件類別及日期範圍 , 讀取上載檔案資料
+
+        參數:	doctype: 文件記錄類別 (array)
+                fromdate: 上載日期開始 (date)
+                todate: 上載日期結束 (date)
+
+        返回資料包括: (array)
+            id: 上載檔案內部編號
+            docmentType: 文件記錄類別 (如: SERVICE, TAX, VISIT, EMPLOYEE, ...)
+            documentId: 文件記錄編號
+            fileType: 檔案類別
+            fileName: 檔案顯示名稱
+            token: 用以下載檔案配對時使用
+    */
+    public function getFileListByDate($doctype = array(), $fromdate='', $todate='') {
         $rtn = array();
-		if (!empty($doctype)) {
-			if ($fromdate=='') $fromdate = date('Y-m-d 00:00:00', strtotime('-1 days'));
-			if ($todate=='') $todate = date('Y-m-d 23:59:59');
-			if (strpos($fromdate, ':')===false) $fromdate .= ' 00:00:00';
-			if (strpos($todate, ':')===false) $todate .= ' 23:59:59';
-			
-			$suffix = Yii::app()->params['envSuffix'];
-			$typelist = "'".implode("','",$doctype)."'";
-			$sql = "select a.id, b.doc_type_code as documentType, b.doc_id as documentId, a.file_type as fileType, 
+        if (!empty($doctype)) {
+            if ($fromdate=='') $fromdate = date('Y-m-d 00:00:00', strtotime('-1 days'));
+            if ($todate=='') $todate = date('Y-m-d 23:59:59');
+            if (strpos($fromdate, ':')===false) $fromdate .= ' 00:00:00';
+            if (strpos($todate, ':')===false) $todate .= ' 23:59:59';
+
+            $suffix = Yii::app()->params['envSuffix'];
+            $typelist = "'".implode("','",$doctype)."'";
+            $sql = "select a.id, b.doc_type_code as documentType, b.doc_id as documentId, a.file_type as fileType, 
 					a.display_name as fileName, a.phy_file_name as token
 					from docman$suffix.dm_file a, docman$suffix.dm_master b
 					where a.mast_id=b.id and a.lcd >= '$fromdate' and a.lcd <= '$todate'
 					and a.remove='N' and b.remove='N' and b.doc_type_code in ($typelist)
 				";
-			$rows = Yii::app()->db->createCommand($sql)->queryAll();
-			foreach ($rows as $row) {
-				$items = explode('.',$row['token']);
-				if (isset($items[0])) $row['token'] = $items[0];
-				$rtn[] = $row;
-			}
-		}
-		return $rtn;
-	}
+            $rows = Yii::app()->db->createCommand($sql)->queryAll();
+            foreach ($rows as $row) {
+                $items = explode('.',$row['token']);
+                if (isset($items[0])) $row['token'] = $items[0];
+                $rtn[] = $row;
+            }
+        }
+        return $rtn;
+    }
 
     public function fileDownloadByIdName($fileId, $fileName) {
-		$data = self::getFileName($fileId);
-		$path = $data['phy_path_name'];
-		$name = $data['phy_file_name'];
-		$filename = $data['display_name'];
-		$filetype = $data['file_type'];
-		
-		$items = explode('.',$name);
-		$match = isset($items[0]) ? $fileName==$items[0] : $fileName==$name;
-		
-		if ($match && file_exists($path.'/'.$name)) {
-			$allow = json_decode(self::_allowedFiles,true);
-			$ext = pathinfo($path.'/'.$name,PATHINFO_EXTENSION);
-			$type = (!empty($filetype)) ? $filetype : (isset($allow[$ext]) ? $allow[$ext] : '');
+        $data = self::getFileName($fileId);
+        $path = $data['phy_path_name'];
+        $name = $data['phy_file_name'];
+        $filename = $data['display_name'];
+        $filetype = $data['file_type'];
 
-			$file = file_get_contents($path.'/'.$name);
-			header("Content-type:".$type);
-			header('Content-Disposition: attachment; filename="'.$filename.'"');
-			header('Content-Length: ' . strlen($file));
-			echo $file;
-			Yii::app()->end();
-		} else {
-			throw new CHttpException(404,'File not found.');
-		}
+        $items = explode('.',$name);
+        $match = isset($items[0]) ? $fileName==$items[0] : $fileName==$name;
+
+        if ($match && file_exists($path.'/'.$name)) {
+            $allow = json_decode(self::_allowedFiles,true);
+            $ext = pathinfo($path.'/'.$name,PATHINFO_EXTENSION);
+            $type = (!empty($filetype)) ? $filetype : (isset($allow[$ext]) ? $allow[$ext] : '');
+
+            $file = file_get_contents($path.'/'.$name);
+            header("Content-type:".$type);
+            header('Content-Disposition: attachment; filename="'.$filename.'"');
+            header('Content-Length: ' . strlen($file));
+            echo $file;
+            Yii::app()->end();
+        } else {
+            throw new CHttpException(404,'File not found.');
+        }
     }
 
     private function hashDirectory($filename) {
@@ -590,6 +612,15 @@ class DocMan {
         $path .= '/'.$tmp;
         if (!file_exists($path)) mkdir($path);
         return $path;
+    }
+
+    //由於列表需要顯示附件數量，導致列表打開太慢，所以保存附件數量
+    public function resetModelFileNumber(){
+        $model = new $this->formId();
+        $funList = get_class_methods($model);
+        if(in_array("resetFileSum",$funList)){
+            $model->resetFileSum($this->docId);
+        }
     }
 }
 ?>

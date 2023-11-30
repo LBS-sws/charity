@@ -255,6 +255,8 @@ function $dlfuncid(mid, did, fid) {
 }
 		";
         Yii::app()->clientScript->registerScript('downloadfile1'.$doctype,$str,CClientScript::POS_HEAD);
+
+        self::showImgFun();
     }
 
     public static function genFileUpload($model, $formname, $doctype) {
@@ -355,6 +357,44 @@ $('#$btnid').on('click', function() {
 });
 		";
         Yii::app()->clientScript->registerScript('fileUpload'.$doctype,$str,CClientScript::POS_READY);
+
+        self::showImgFun();
+    }
+
+    public static function showImgFun(){
+        Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . "/css/viewer.css");//图片阅读
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . "/js/viewer.js", CClientScript::POS_END);//图片阅读
+        $js = "
+            $('body').on('click','.viewer-canvas',function(){
+                $('body').removeClass('viewer-open');
+                $(this).parent('.viewer-container').remove();
+            });
+            $('body').on('click','.viewer-canvas *',function(e){
+                e.stopPropagation();
+            });
+            $('body').on('click','.search_box_img',function(){
+                var clickText = $(this).text();
+                if($('#viewer-ul').length>0){
+                    $('#viewer-ul').remove();
+                }
+                var list = $('<ul id=\"viewer-ul\" class=\"hide\"></ul>');
+                $(this).parents('table:first').find('img').each(function(){
+                    var title = $(this).parents('td.search_box_img').eq(0).text();
+                    var li = $('<li></li>');
+                    var img = $('<img>');
+                    img.attr({ src:$(this).attr('src'),alt:title });
+                    if(title == clickText){
+                        img.addClass('click_viewer_img');
+                    }
+                    li.html(img);
+                    list.append(li);
+                });
+                $('body').append(list);
+                list.viewer({ url: 'src'});
+                list.find('.click_viewer_img').trigger('click');
+            });
+	    ";
+        Yii::app()->clientScript->registerScript('showImgFun',$js,CClientScript::POS_READY);
     }
 }
 ?>
