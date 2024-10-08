@@ -15,7 +15,7 @@ return array(
 	'Accounting'=>'会计系统',
 	'Operation'=>'营运系统',
 	'Personnel'=>'人事系统',
-	'Sales'=>'销售系统',
+        'Sales'=>'销售系统',
     'Quiz'=>'培训系统',
 	'Academic Credit'=>'学分系统',
     'Integral'=>'学分系统',
@@ -25,7 +25,7 @@ return array(
 	'System Use'=>'系统使用',
     'Investment'=>'投资管理系统',
     'Project progress'=>'项目跟进系统',
-	'New United'=>'派单系统',
+    'New United'=>'派单系统',
 
 
 	'Data Entry'=>'数据输入',
