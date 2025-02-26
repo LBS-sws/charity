@@ -73,10 +73,10 @@ return array(
 
 		// uncomment the following to use a MySQL database
 		'db'=>array(
-            'connectionString' => 'mysql:host=localhost;dbname=charitydev',
+            'connectionString' => 'mysql:host=59.37.134.206;dbname=charity',
             'emulatePrepare' => true,
             'username' => 'root',
-            'password' => 'swisher168',
+            'password' => 'rXfs7XmG7B4H7xfi',
             'charset' => 'utf8',
 		),
 		
@@ -141,7 +141,7 @@ return array(
 		'version'=>'1.0.0',
 		'docmanPath'=>'/docman/dev',
 		'systemId'=>'cy',
-		'envSuffix'=>'dev',
+		'envSuffix'=>'',
         'appname'=>'LBS DMS (UAT)',
         'appcolor'=>'skin-teal-light',
 	),

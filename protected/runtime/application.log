@@ -10589,3 +10589,27 @@ Stack trace:
 REQUEST_URI=/charity/index.php/ajax/notify
 HTTP_REFERER=http://192.168.1.5/charity/index.php/queue/index
 ---
+2025/02/18 14:48:36 [error] [php] Non-static method CGeneral::systemMapping() should not be called statically, assuming $this from incompatible context (D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\charity\protected\components\WebUser.php:243)
+Stack trace:
+#0 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\actions\CInlineAction.php(50): SiteController->actionIndex()
+#1 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\CController.php(309): CInlineAction->runWithParams()
+#2 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\filters\CFilterChain.php(134): SiteController->runAction()
+#3 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\charity\protected\components\Controller.php(96): CFilterChain->run()
+#4 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\filters\CInlineFilter.php(59): SiteController->filterEnforceNoConcurrentLogin()
+#5 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter()
+#6 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\charity\protected\components\Controller.php(121): CFilterChain->run()
+#7 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\filters\CInlineFilter.php(59): SiteController->filterEnforceSessionExpiration()
+#8 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter()
+#9 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\charity\protected\components\Controller.php(76): CFilterChain->run()
+#10 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\filters\CInlineFilter.php(59): SiteController->filterEnforceRegisteredStation()
+#11 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter()
+#12 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\CController.php(292): CFilterChain->run()
+#13 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\CController.php(266): SiteController->runActionWithFilters()
+#14 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\CWebApplication.php(283): SiteController->run()
+#15 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\web\CWebApplication.php(142): CWebApplication->runController()
+#16 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\yii\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#17 D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\charity\index.php(13): CWebApplication->run()
+REQUEST_URI=/charity/index.php
+in D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\charity\protected\components\WebUser.php (243)
+in D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\charity\protected\controllers\SiteController.php (121)
+in D:\phpstudy_pro\WWW\dalu_lbs\Daily-Report\charity\protected\controllers\SiteController.php (55)
