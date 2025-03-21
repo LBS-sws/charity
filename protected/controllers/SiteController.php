@@ -97,15 +97,16 @@ class SiteController extends Controller
 		}
 	}
 
+
     /**
      * Displays the login page
      */
     public function actionLogin()
     {
-        //$lbsUrl = str_replace(Yii::app()->getBaseUrl(false),'',Yii::app()->getBaseUrl(true));
-        //$lbsUrl.= Yii::app()->request->url;
         $lbsUrl = Yii::app()->getBaseUrl(true);
-        $lbsUrl = urlencode($lbsUrl);
+        if(!empty(Yii::app()->user->returnUrl)){
+            $lbsUrl = str_replace(Yii::app()->getBaseUrl(false),'',$lbsUrl).Yii::app()->user->returnUrl;
+        }
         $muUrl = Yii::app()->params['MHCurlRootURL']."/cas/login?service=".$lbsUrl;
         $this->redirect($muUrl);
     }
@@ -134,13 +135,11 @@ class SiteController extends Controller
 				Yii::app()->user->setUrlAfterLogin();
 				$this->redirect(Yii::app()->user->returnUrl);
 			}
-            else
-            {
-                $errorCode = $model->errorCode;
-                $message=CHtml::errorSummary($model);
-                $Validation_Message = $errorCode == UserIdentity::ERROR_RESET_PASSWORD ? $_POST['LoginForm']['username'] : 'Validation Message';
-                Dialog::message($Validation_Message, $message,$errorCode);
-            }
+			else
+			{
+				$message=CHtml::errorSummary($model);
+				Dialog::message('Validation Message', $message);
+			}
 		}
 		// display the login form
 		$this->layout = "main_nm";
@@ -152,10 +151,10 @@ class SiteController extends Controller
 	 */
 	public function actionLogout()
 	{
-		Yii::app()->user->logout();
+        Yii::app()->user->logout();
         $url = Yii::app()->params['MHCurlRootURL']."/cas/logout";
         //$result = file_get_contents($url);//单点登出门户网站
-		$this->redirect($url);
+        $this->redirect($url);
         //$this->redirect(Yii::app()->homeUrl);
 	}
 
@@ -212,6 +211,18 @@ class SiteController extends Controller
 		// display the login form
 		$model->language = Yii::app()->language;
 		$this->render('language',array('model'=>$model));
+	}
+	
+	public function actionNotifyopt() {
+		$model=new NotifyoptForm;
+
+		if(isset($_POST['NotifyoptForm'])) {
+			$model->attributes=$_POST['NotifyoptForm'];
+			$model->save();
+			Dialog::message('Info', Yii::t('dialog','Option changed'));
+		}
+		$model->retrieveData();
+		$this->render('notifyopt',array('model'=>$model));
 	}
 
     public function actionResetLoginPassword()
